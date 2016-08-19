@@ -24,7 +24,7 @@ public class MainMenuUIManager : MonoBehaviour {
     }
 
     public void OpenGEOMode() {
-
+        SceneManager.LoadScene("MapMode3D");
     }
 
     public void OpenContactMode() {

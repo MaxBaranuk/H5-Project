@@ -14,8 +14,10 @@ public class ServerManager : MonoBehaviour {
 	
 	}
 
-    public List<MapObject> getObjectsList(Vector2 location) {
-        List<MapObject> obj = new List<MapObject>();
+    public List<Item> getObjectsList(Vector2 location) {
+        List<Item> obj = new List<Item>();
+
+
         return obj;
     }
 
@@ -25,7 +27,7 @@ public class ServerManager : MonoBehaviour {
         return ag;
     }
 
-    public MapObject getObjectByTargetID() {
-        return new MapObject();
+    public Item getObjectByTargetID(string targetID) {
+        return new Item();
     }
 }
