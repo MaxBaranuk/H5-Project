@@ -26,13 +26,13 @@ public class MapManager : MonoBehaviour {
     void Start () {
         currLocation = Input.location.lastData;
         user = GameObject.Find("UserPoint");
-        map = GameObject.Find("Map").GetComponent<MapNav>();
-        InvokeRepeating("CheckForARObjects", 1, 1);
+        map = GameObject.Find("Map").GetComponent<MapNav>();       
         lastLocation = Input.location.lastData;
         colletion = ItemsCollection.Load("Places");
         itemsOnScene = new List<Item>();
         InvokeRepeating("UpdateItems", 1, 1);
-//        buildings = new List<GameObject>();
+        InvokeRepeating("CheckForARObjects", 1, 1);
+        //        buildings = new List<GameObject>();
     }
     
 	// Update is called once per frame

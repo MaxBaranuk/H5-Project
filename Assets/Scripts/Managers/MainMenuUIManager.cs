@@ -28,10 +28,10 @@ public class MainMenuUIManager : MonoBehaviour {
     }
 
     public void OpenContactMode() {
-
+        SceneManager.LoadScene("contactScene");
     }
 
     public void OpenInfoMode() {
-
+        AndroidLocalNotification.SendNotification(0, TimeSpan.Zero, "Notification", "Hello");
     }
 }
