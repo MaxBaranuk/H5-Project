@@ -1,5 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
+using MiniJSON;
+using System.Collections.Generic;
 
 public class TestRequest : MonoBehaviour {
 
@@ -31,21 +33,26 @@ public class TestRequest : MonoBehaviour {
 //            JSONObject j = new JSONObject(www.text);
             Debug.Log(www.text);
             string trim = www.text.Substring(20, www.text.Length-22);
-            
-//            System.IO.File.WriteAllText("D:\\texr.txt", trim);
 
-            //Debug.Log(www.text);
-            JSONObject jo = new JSONObject(trim);
-//            accessData(jo);
-            JSONObject jo0 = jo.GetField("route");
-////            Debug.Log(jo0);
-            JSONObject jo1 = jo0.GetField("shape");
+            //            System.IO.File.WriteAllText("D:\\texr.txt", trim);
 
-            JSONObject arr = jo1["shapePoints"];
-            for(int i = 0; i < arr.list.Count; i+=2){
-                Debug.Log(arr[i] + ", " + arr[i + 1]);
-            }
+            //            //Debug.Log(www.text);
+            //            JSONObject jo = new JSONObject(trim);
+            ////            accessData(jo);
+            //            JSONObject jo0 = jo.GetField("route");
+            //////            Debug.Log(jo0);
+            //            JSONObject jo1 = jo0.GetField("shape");
+
+            //            JSONObject arr = jo1["shapePoints"];
+            //            for(int i = 0; i < arr.list.Count; i+=2){
+            //                Debug.Log(arr[i] + ", " + arr[i + 1]);
+            //            }
             //            Debug.Log(arr);
+
+            var dict = Json.Deserialize(trim) as Dictionary<string, object>;
+            Dictionary<string, object> route = (Dictionary<string, object>) dict["route"];
+            Debug.Log(route["shape"]);
+
         }
         else {
             Debug.Log("WWW Error: " + www.error);

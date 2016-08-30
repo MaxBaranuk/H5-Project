@@ -1,0 +1,46 @@
+ManifestFileVersion: 0
+CRC: 3118848523
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: d81d6192bbc381eb8344d55bb903d658
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: cdc25f3ce22203cfea4f9db70acf6b98
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 90
+  Script: {instanceID: 0}
+- Class: 95
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 11500000, guid: 7112d7a21adae0242a5ebd288dfc8799, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 253b474a66c106c4a85ef960d50be368, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+Assets:
+- Assets/Prefabs/plan_icon.prefab
+- Assets/Prefabs/ananas_group_model.FBX
+- Assets/Prefabs/customTarget.prefab
+- Assets/Prefabs/ananas_group.prefab
+- Assets/Prefabs/Materials/ananas_group_08CompleteMap.mat
+Dependencies: []

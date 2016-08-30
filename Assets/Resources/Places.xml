@@ -15,50 +15,50 @@
 			<Lon>30.512992</Lon>
 			<info>tyutyjyj</info>
  		</Place>
-		<Place name="Printer">
- 			<Lat>50.472315</Lat>
-			<Lon>30.507393</Lon>
-			<info>Принтер</info>
+		<Place name="Turivska">
+ 			<Lat>50.473853</Lat>
+			<Lon>30.510557</Lon>
+			<info>Turivska</info>
  		</Place>
-		<Place name="TeaBag">
- 			<Lat>50.473851</Lat>
-			<Lon>30.507007</Lon>
-			<info>Чай</info>
+		<Place name="Shokolad">
+ 			<Lat>50.472019</Lat>
+			<Lon>30.503083</Lon>
+			<info>Shokolad</info>
  		</Place>
-		<Place name="Object">
- 			<Lat>50.474263</Lat>
-			<Lon>30.509387</Lon>
-			<info>Obj</info>
+		<Place name="Mezhigirska">
+ 			<Lat>50.470910</Lat>
+			<Lon>30.509051</Lon>
+			<info>Mezhigirska</info>
  		</Place>
 		<Place name="Hydropark">
  			<Lat>50.444549</Lat>
 			<Lon>30.574534</Lon>
-			<info>Obj</info>
+			<info>Hydropark</info>
  		</Place>
 		<Place name="Komod">
  			<Lat>50.453767</Lat>
 			<Lon>30.598841</Lon>
-			<info>Obj</info>
+			<info>Komod</info>
  		</Place>
 		<Place name="Malyshka">
  			<Lat>50.458227</Lat>
 			<Lon>30.613475</Lon>
-			<info>Obj</info>
+			<info>Malyshka</info>
  		</Place>
 		<Place name="Kosmix">
  			<Lat>50.453963</Lat>
 			<Lon>30.609682</Lon>
-			<info>Obj</info>
+			<info>Kosmix</info>
 		</Place>
 		<Place name="Novus">
  			<Lat>50.459374</Lat>
 			<Lon>30.632311</Lon>
-			<info>Obj</info>
+			<info>Novus</info>
 		</Place>
 		<Place name="Krakivska">
  			<Lat>50.457916</Lat>
 			<Lon>30.629518</Lon>
-			<info>Obj</info>
+			<info>Krakivska</info>
  		</Place>
 		<Place name="Silpo">
  			<Lat>50.451555</Lat>

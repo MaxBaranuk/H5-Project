@@ -2,10 +2,15 @@
 using System.Collections;
 using System.Xml;
 using System.Xml.Serialization;
+using AssetBundles;
 
 public class Item {
 
-//    public enum ContentType {Link, Video, ThreeDObject, Image}
+    public const string AssetBundlesOutputPath = "/AssetBundles/";
+    public string assetBundleName;
+    public string assetName;
+
+    //    public enum ContentType {Link, Video, ThreeDObject, Image}
     public float Lat;
     public float Lon;
     public string info;
@@ -22,4 +27,6 @@ public class Item {
     {
 
     }
+
+   
 }

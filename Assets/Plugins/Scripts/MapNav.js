@@ -35,6 +35,7 @@ var info : boolean;								 //Used by GPS-Status.js to enable/disable the GPS in
 var triDView : boolean = false;					 //2D/3D modes toggle
 var ready : boolean;							 //true when the map texture has been successfully loaded
 var mapping : boolean = true;
+var download : float;
 
 private var speed : float;
 private var cam : Transform;
@@ -44,7 +45,6 @@ private var loc : LocationInfo;
 private var currentPosition : Vector3;
 private var newUserPos : Vector3; 
 private var currentUserPos : Vector3;
-private var download : float;
 private var www : WWW;
 private var url = ""; 
 private var longitude : double;
@@ -418,9 +418,16 @@ function ReScale(){
 	
 	//3D View 
 	if(triDView){
-			fixPointer=false;
-			cam.localPosition.z=-(65536*camDist*Mathf.Cos(camAngle*Mathf.PI/180))/Mathf.Pow(2,zoom);
-			cam.localPosition.y=65536*camDist*Mathf.Sin(camAngle*Mathf.PI/180)/Mathf.Pow(2,zoom);
+	    fixPointer=false;
+	    cam.localPosition.z=-(65536*camDist*Mathf.Cos(camAngle*Mathf.PI/180))/Mathf.Pow(2,zoom);
+	    cam.localPosition.y=65536*camDist*Mathf.Sin(camAngle*Mathf.PI/180)/Mathf.Pow(2,zoom);
+
+	    var items:GameObject[] = GameObject.FindGameObjectsWithTag("Building");
+	    for(var g:GameObject in items){
+         g.SendMessage("Rescale");
+//         GetComponent.<ItemScale>().Rescale();
+	    }
+//	        var man:MapUIManager = GetComponent.<MapUIManager>();
 	}
 	//2D View 
 	else{
@@ -468,9 +475,9 @@ function Update(){
 			currentUserPos.z = Mathf.Lerp (user.position.z, newUserPos.z, 2.0 * Time.deltaTime);
 			user.position.z = currentUserPos.z; 
 		
-			if(System.Math.Abs(user.eulerAngles.y-heading)>=5){
-    			user.rotation=Quaternion.Slerp (user.transform.rotation,  Quaternion.Euler (0, heading, 0), Time.time * 0.0005);
-			}
+			//if(System.Math.Abs(user.eulerAngles.y-heading)>=5){
+    		//	user.rotation=Quaternion.Slerp (user.transform.rotation,  Quaternion.Euler (0, heading, 0), Time.time * 0.0005);
+			//}
 		}
 		
 		else{

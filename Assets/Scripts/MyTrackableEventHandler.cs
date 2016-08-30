@@ -14,6 +14,7 @@ namespace Vuforia
     public class MyTrackableEventHandler : MonoBehaviour,
                                                 ITrackableEventHandler
     {
+        public GameObject g;
         #region PRIVATE_MEMBER_VARIABLES
  
         private TrackableBehaviour mTrackableBehaviour;
@@ -69,9 +70,12 @@ namespace Vuforia
         private void OnTrackingFound()
         {
             string id = mTrackableBehaviour.Trackable.Name;
-            Item mo =  ServerManager.instanse.getObjectByTargetID(id);
-            mo.ShowObject();
-
+            //            StartCoroutine(ServerManager.instanse.getObjectByTargetID(id));
+            //            mo.ShowObject();
+//            if (id == "customTarget") {
+                GameObject go = Instantiate(g);
+                go.transform.parent = transform;
+ //           }  
             Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
             Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 
@@ -93,6 +97,9 @@ namespace Vuforia
 
         private void OnTrackingLost()
         {
+            for (int i = transform.childCount; i >=0; i--) {
+                Destroy(transform.GetChild(i).gameObject);
+            }
             Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
             Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 

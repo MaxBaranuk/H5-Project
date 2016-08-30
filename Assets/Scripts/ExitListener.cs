@@ -6,8 +6,8 @@ public class ExitListener : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
-	}
+//        StartCoroutine(ServerManager.instanse.getObjectByTargetID(""));
+    }
 	
 	// Update is called once per frame
 	void Update () {
