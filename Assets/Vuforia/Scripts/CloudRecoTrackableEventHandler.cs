@@ -16,6 +16,7 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
 {
     public GameObject currObject;
     public Text info;
+    public GameObject agentButton;
     #region PRIVATE_MEMBERS
     private TrackableBehaviour mTrackableBehaviour;
     #endregion // PRIVATE_MEMBERS
@@ -76,6 +77,7 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
 //        id = id.Substring(0, id.Length - 4);
         info.text = id;
         StartCoroutine(ServerManager.instanse.getObjectByTargetID(id));
+        agentButton.SetActive(true);
         ServerManager.instanse.status += "";
         //        mo.ShowObject();
         //            if (id == "customTarget") {
@@ -121,7 +123,7 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
         info.text = "clear";
         ServerManager.instanse.status = "";
         Destroy(currObject);
-               
+        agentButton.SetActive(false);
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
         Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 

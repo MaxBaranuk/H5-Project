@@ -19,31 +19,6 @@ public class MainMenuUIManager : MonoBehaviour {
 #endif
     }
 
-    //IEnumerator CheckInternetConnection()
-    //{
-    //    while (true)
-    //    {
-    //        WWW www = new WWW("http://192.168.1.105/dashboard");
-
-    //        float waitTime = 2;
-    //        while (!www.isDone && waitTime > 0)
-    //        {
-    //            yield return new WaitForSeconds(1);
-    //            waitTime--;
-    //        }
-    //        bool hasInternetConnection = false;
-    //        if (!www.isDone | www.error != null)
-    //        {
-    //            hasInternetConnection = false;
-    //        }
-    //        else {
-    //            hasInternetConnection = true;
-    //        }
-    //        connectionInfoPanel.SetActive(!hasInternetConnection);
-    //        yield return new WaitForSeconds(1);
-    //    }
-    //}
-
     void Update () {
         connectionInfoPanel.SetActive(!ServerManager.instanse.hasInternetConnection);
         ExitListener();
@@ -67,5 +42,6 @@ public class MainMenuUIManager : MonoBehaviour {
 
     public void OpenInfoMode()
     {
+        SceneManager.LoadScene("infoScene");
     }
 }

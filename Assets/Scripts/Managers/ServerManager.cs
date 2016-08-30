@@ -54,8 +54,8 @@ public class ServerManager : MonoBehaviour {
             float waitTime = 2;
             while (!www.isDone && waitTime > 0)
             {
-                yield return new WaitForSeconds(1);
-                waitTime--;
+                yield return new WaitForSeconds(0.1f);
+                waitTime-=0.1f;
             }
             
             if (!www.isDone | www.error != null)

@@ -43,7 +43,7 @@ public class MapUIManager : MonoBehaviour {
         else ARButton.SetActive(false);
        
         loadInfo.text = map.status;
-        info.text = "" + locationManager.nearItems.Count;
+//        info.text = "" + locationManager.nearItems.Count;
         if (map.ready&&loadpanel.activeSelf)
         {
             uiPanel.SetActive(true);
@@ -51,34 +51,10 @@ public class MapUIManager : MonoBehaviour {
         }
 
         if(map.mapping) info.text = "Updating map " + System.Math.Round(map.download * 100) + " %";
-        else info.text = "" + locationManager.nearItems.Count;
+        else info.text = "" + locationManager.nearItems.Count +"\n"+ locationManager.currLocation.latitude+"\n"+locationManager.currLocation.longitude;
+
         UserInput();
     }
-
-    //IEnumerator CheckInternetConnection()
-    //{
-    //    while (true)
-    //    {
-    //        WWW www = new WWW("http://192.168.1.105/dashboard");
-
-    //        float waitTime = 2;
-    //        while (!www.isDone && waitTime > 0)
-    //        {
-    //            yield return new WaitForSeconds(1);
-    //            waitTime--;
-    //        }
-    //        bool hasInternetConnection = false;
-    //        if (!www.isDone | www.error != null)
-    //        {
-    //            hasInternetConnection = false;
-    //        }
-    //        else {
-    //            hasInternetConnection = true;
-    //        }
-    //        connectionInfoPanel.SetActive(!hasInternetConnection);
-    //        yield return new WaitForSeconds(1);
-    //    }
-    //}
 
     public void CloseInfoBuildingPanel() {
         buildingInfoPanel.SetActive(false);

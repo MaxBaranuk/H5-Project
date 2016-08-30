@@ -11,7 +11,7 @@ public class LocationManager : MonoBehaviour {
     public bool hasAR = false;
     ItemsCollection colletion;
     LocationInfo lastLocation;
-    LocationInfo currLocation;
+    public LocationInfo currLocation;
     MapUIManager mapManager;
     public HashSet<Item> nearItems;
     private BackgroundWorker _backgroundWorker;

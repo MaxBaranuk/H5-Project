@@ -220,7 +220,7 @@ function Orientate(){
 }
  
 //Get altitude and horizontal accuracy readings using new location data (every 2s)
-InvokeRepeating("AccuracyAltitude",1,2);
+InvokeRepeating("AccuracyAltitude",1,1);
 function AccuracyAltitude(){
 	if(gpsFix)
 		altitude=loc.altitude;
