@@ -9,7 +9,7 @@ public class LocationManager : MonoBehaviour {
 
 
     public bool hasAR = false;
-    ItemsCollection colletion;
+    public ItemsCollection colletion;
     LocationInfo lastLocation;
     public LocationInfo currLocation;
     MapUIManager mapManager;
@@ -96,8 +96,8 @@ public class LocationManager : MonoBehaviour {
                 float dist = getDistanceFromLatLonInKm(currLocation.latitude, currLocation.longitude, it.Lat, it.Lon);
 
                 // draw items on map
-                if (dist < 2 && !mapManager.itemsOnScene.Contains(it)) mapManager.CreatePoint(it);
-                if (dist > 2 && mapManager.itemsOnScene.Contains(it)) mapManager.DestroyPoint(it);
+                if (dist < 2 && !mapManager.itemsOnScene.ContainsKey(it)) mapManager.CreatePoint(it);
+                if (dist > 2 && mapManager.itemsOnScene.ContainsKey(it)) mapManager.DestroyPoint(it);
 
                 //// check for Ar objects
                 //bool hasObj = false;
@@ -142,7 +142,7 @@ public class LocationManager : MonoBehaviour {
         notif.alertAction = "Notification";
         notif.alertBody = "Hello!";
         notif.alertLaunchImage = "";
-        NotificationServices.ScheduleLocalNotification(notif);
+       UnityEngine.iOS.NotificationServices.ScheduleLocalNotification(notif);
 #endif
     }
 

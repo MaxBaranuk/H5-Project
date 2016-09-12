@@ -19,7 +19,7 @@ var key : String="Paste your Appkey here";       //AppKey (API key) code obtaine
 var maptype : String[];							 //Array including available maptypes
 var index :int;									 //maptype array index. 
 var camDist : float=15.0;						 //Camera distance(3D) or height(2D) to user
-var camAngle : int=40;							 //Camera angle from horizontal plane
+var camAngle : int=90;							 //Camera angle from horizontal plane
 var initTime : int = 3;							 //Hold time after a successful GPS fix in order to improve location accuracy
 var maxWait : int = 30;							 //GPS fix timeout
 var buttons : boolean=true;						 //Enables GUI sample control buttons 
@@ -57,6 +57,7 @@ private var mymap : Transform;
 private var initPointerSize :float;
 private var tempLat :double;
 private var tempLon :double;
+private var map:GameObject;
 
 function Awake(){
 	//Set the map's tag to GameController
@@ -86,7 +87,7 @@ function Awake(){
 }
 
 function Start () {
-
+    map = GameObject.FindGameObjectWithTag("Map");
 	//Setting variables values on Start
 	gpsFix=false;
 	rect = Rect (screenX/10, screenY/10,8*screenX/10, 8*screenY/10);
@@ -210,14 +211,14 @@ function MyPosition(){
 
 //Set player's orientation using new incoming compass data (every 0.05s)
 //InvokeRepeating("Orientate",1,0.05);
-function Orientate(){
-	if(!simGPS && gpsFix){
-		heading=Input.compass.trueHeading;
-	}
-	else{
-		heading=user.eulerAngles.y;
-	}
-}
+//function Orientate(){
+//	if(!simGPS && gpsFix){
+//		heading=Input.compass.trueHeading;
+//	}
+//	else{
+//		heading=user.eulerAngles.y;
+//	}
+//}
  
 //Get altitude and horizontal accuracy readings using new location data (every 2s)
 InvokeRepeating("AccuracyAltitude",1,1);
@@ -338,9 +339,9 @@ function ReSet(){
 	transform.position.x = ((tempLon * 20037508.34 / 180)/100)-iniRef.x;
 	transform.position.z = System.Math.Log(System.Math.Tan((90 + tempLat) * System.Math.PI / 360)) / (System.Math.PI / 180);
 	transform.position.z = ((transform.position.z * 20037508.34 / 180)/100)-iniRef.z; 
-	cam.position.x = ((tempLon * 20037508.34 / 180)/100)-iniRef.x;
-	cam.position.z = System.Math.Log(System.Math.Tan((90 + tempLat) * System.Math.PI / 360)) / (System.Math.PI / 180);
-	cam.position.z = ((cam.position.z * 20037508.34 / 180)/100)-iniRef.z; 
+//	cam.position.x = ((tempLon * 20037508.34 / 180)/100)-iniRef.x;
+//	cam.position.z = System.Math.Log(System.Math.Tan((90 + tempLat) * System.Math.PI / 360)) / (System.Math.PI / 180);
+//	cam.position.z = ((cam.position.z * 20037508.34 / 180)/100)-iniRef.z; 
 }
 
 
@@ -419,28 +420,31 @@ function ReScale(){
 	//3D View 
 	if(triDView){
 	    fixPointer=false;
-	    cam.localPosition.z=-(65536*camDist*Mathf.Cos(camAngle*Mathf.PI/180))/Mathf.Pow(2,zoom);
-	    cam.localPosition.y=65536*camDist*Mathf.Sin(camAngle*Mathf.PI/180)/Mathf.Pow(2,zoom);
-
-	    var items:GameObject[] = GameObject.FindGameObjectsWithTag("Building");
-	    for(var g:GameObject in items){
-         g.SendMessage("Rescale");
+ //       cam.localPosition.z=-(65536*camDist*Mathf.Cos(camAngle*Mathf.PI/180))/Mathf.Pow(2,zoom);
+	    cam.localPosition.y=65536*camDist/Mathf.Pow(2,zoom);
+	    cam.localRotation.y = 0; 
+	    user.localRotation.y = 0;
+//	    var map:MapUIManager = GameObject.FindGameObjectWithTag("Map");
+	    map.SendMessage("RescaleItems");
+	    //var items:GameObject[] = GameObject.FindGameObjectsWithTag("Building");
+	    //for(var g:GameObject in items){
+        // g.SendMessage("Rescale");
 //         GetComponent.<ItemScale>().Rescale();
 	    }
 //	        var man:MapUIManager = GetComponent.<MapUIManager>();
-	}
+//	}
 	//2D View 
-	else{
-		cam.localEulerAngles=Vector3(90,0,0);
-		cam.position.y=(65536*camDist)/(Mathf.Pow(2,zoom));
-		cam.position.z=user.position.z;
-		//Correct the camera's near and far clipping distances according to its new height.
-		//Introduced to avoid the player and plane not being rendered under some circunstances.
-		mycam.nearClipPlane=cam.position.y/10;
-		mycam.farClipPlane= cam.position.y+1;
-		//Small correction to the user's height according to zoom level to avoid similar camera issues.
-		user.position.y=10*Mathf.Exp(-zoom)+0.01;
-	}
+	//else{
+	//	cam.localEulerAngles=Vector3(90,0,0);
+	//	cam.position.y=(65536*camDist)/(Mathf.Pow(2,zoom));
+	//	cam.position.z=user.position.z;
+	//	//Correct the camera's near and far clipping distances according to its new height.
+	//	//Introduced to avoid the player and plane not being rendered under some circunstances.
+	//	mycam.nearClipPlane=cam.position.y/10;
+	//	mycam.farClipPlane= cam.position.y+1;
+	//	//Small correction to the user's height according to zoom level to avoid similar camera issues.
+	//	user.position.y=10*Mathf.Exp(-zoom)+0.01;
+	//}
 }
 
 function Update(){
@@ -456,8 +460,8 @@ function Update(){
 	//3D-2D View Camera Toggle 
 	if(triDView){
 		cam.parent=user;
-		if(ready)
-			cam.LookAt(user);
+//		if(ready)
+//			cam.LookAt(user);
 	}
 	else{
 		cam.parent=null;		
