@@ -49,8 +49,9 @@ public class ServerManager : MonoBehaviour {
     {
         while (true)
         {
-            WWW www = new WWW("http://192.168.1.105/dashboard");
-
+ //           WWW www = new WWW("http://192.168.1.105/dashboard");
+            WWW www = new WWW("http://www.this-page-intentionally-left-blank.org/");
+            
             float waitTime = 2;
             while (!www.isDone && waitTime > 0)
             {

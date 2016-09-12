@@ -65,9 +65,19 @@
 			<Lon>30.632258</Lon>
 			<info>Obj</info>
  		</Place>
-		<Place name="ATB">
- 			<Lat>50.447557</Lat>
-			<Lon>30.628897</Lon>
+		<Place name="Empire State">
+ 			<Lat>40.748286</Lat>
+			<Lon>-73.985666</Lon>
+			<info>Obj</info>
+ 		</Place>
+		<Place name="Vona Trading">
+ 			<Lat>40.745774</Lat>
+			<Lon>-73.989308</Lon>
+			<info>Obj</info>
+ 		</Place>
+		<Place name="NY2">
+ 			<Lat>40.745638</Lat>
+			<Lon>-73.987118</Lon>
 			<info>Obj</info>
  		</Place>
  	</Places>
