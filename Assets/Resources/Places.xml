@@ -1,9 +1,27 @@
 <PlaceCollection>
  	<Places>
- 		<Place name="Turivska">
+ 		<Place name="Opera">
+ 			<Lat>50.446653</Lat>
+			<Lon>30.512835</Lon>
+			<type>Appartment</type>
+			<info>Національна Опера</info>
+ 		</Place>
+ 		<Place name="Paton">
+ 			<Lat>50.445680</Lat>
+			<Lon>30.514509</Lon>
+			<type>Appartment</type>
+			<info>Пам'ятник Патону</info>
+ 		</Place>
+		<Place name="Lysenko">
+ 			<Lat>50.447091</Lat>
+			<Lon>30.512992</Lon>
+			<type>Appartment</type>
+			<info>tyutyjyj</info>
+ 		</Place>
+		<Place name="Turivska">
  			<Lat>50.473853</Lat>
 			<Lon>30.510557</Lon>
-			<type>Office</type>
+			<type>Appartment</type>
 			<info>Turivska</info>
  		</Place>
 		<Place name="Shokolad">
@@ -15,13 +33,13 @@
 		<Place name="Mezhigirska">
  			<Lat>50.470910</Lat>
 			<Lon>30.509051</Lon>
-			<type>House</type>
+			<type>Appartment</type>
 			<info>Mezhigirska</info>
  		</Place>
 		<Place name="Hydropark">
  			<Lat>50.444549</Lat>
 			<Lon>30.574534</Lon>
-			<type>Office</type>
+			<type>Appartment</type>
 			<info>Hydropark</info>
  		</Place>
 		<Place name="Komod">
@@ -30,22 +48,22 @@
 			<type>Appartment</type>
 			<info>Komod</info>
  		</Place>
-		<Place name="Malyshka">
- 			<Lat>50.458227</Lat>
-			<Lon>30.613475</Lon>
+		<Place name="Enersys">
+ 			<Lat>50.445844</Lat>
+			<Lon>30.435342</Lon>
 			<type>Appartment</type>
 			<info>Malyshka</info>
  		</Place>
-		<Place name="Kosmix">
- 			<Lat>50.453963</Lat>
-			<Lon>30.609682</Lon>
-			<type>House</type>
+		<Place name="Rostok">
+ 			<Lat>50.447254</Lat>
+			<Lon>30.432259</Lon>
+			<type>Office</type>
 			<info>Kosmix</info>
 		</Place>
-		<Place name="Novus">
- 			<Lat>50.459374</Lat>
-			<Lon>30.632311</Lon>
-			<type>Office</type>
+		<Place name="Akvant">
+ 			<Lat>50.446129</Lat>
+			<Lon>30.433371</Lon>
+			<type>House</type>
 			<info>Novus</info>
 		</Place>
 		<Place name="Krakivska">
@@ -57,65 +75,25 @@
 		<Place name="Silpo">
  			<Lat>50.451555</Lat>
 			<Lon>30.632258</Lon>
-			<type>Area</type>
+			<type>Appartment</type>
 			<info>Obj</info>
  		</Place>
-<<<<<<< Updated upstream
 		<Place name="Empire State">
  			<Lat>40.748286</Lat>
 			<Lon>-73.985666</Lon>
+			<type>Appartment</type>
 			<info>Obj</info>
  		</Place>
 		<Place name="Vona Trading">
  			<Lat>40.745774</Lat>
 			<Lon>-73.989308</Lon>
+			<type>Appartment</type>
 			<info>Obj</info>
  		</Place>
 		<Place name="NY2">
  			<Lat>40.745638</Lat>
 			<Lon>-73.987118</Lon>
-=======
-		<Place name="ATB">
- 			<Lat>50.447557</Lat>
-			<Lon>30.628897</Lon>
-			<type>House</type>
-			<info>Obj</info>
- 		</Place>
-		<Place name="Сemetery">
- 			<Lat>50.445140</Lat>
-			<Lon>30.435445</Lon>
 			<type>Appartment</type>
-			<info>Obj</info>
-		</Place>
-		<Place name="Enercys">
- 			<Lat>50.445883</Lat>
-			<Lon>30.435398</Lon>
-			<type>Office</type>
-			<info>Obj</info>
- 		</Place>
-		<Place name="Appart">
- 			<Lat>50.446203</Lat>
-			<Lon>30.433185</Lon>
-			<type>Appartment</type>
-			<info>Obj</info>
- 		</Place>
-		<Place name="Square">
- 			<Lat>50.447795</Lat>
-			<Lon>30.432380</Lon>
-			<type>Area</type>
-			<info>Obj</info>
- 		</Place>
-		<Place name="Appart2">
- 			<Lat>50.446702</Lat>
-			<Lon>30.438259</Lon>
-			<type>Appartment</type>
-			<info>Obj</info>
- 		</Place>
-		<Place name="Stadion">
- 			<Lat>50.447593</Lat>
-			<Lon>30.438724</Lon>
-			<type>Area</type>
->>>>>>> Stashed changes
 			<info>Obj</info>
  		</Place>
  	</Places>

@@ -6,11 +6,9 @@ using UnityEngine.SceneManagement;
 public class MainMenuUIManager : MonoBehaviour {
 
     public GameObject connectionInfoPanel;
-    void Awake() {
-//        StartCoroutine(CheckInternetConnection());
-    }
-
+   
 	void Start () {
+        
 #if UNITY_IOS
         UnityEngine.iOS.NotificationServices.RegisterForNotifications(
                 UnityEngine.iOS.NotificationType.Alert |
@@ -29,11 +27,13 @@ public class MainMenuUIManager : MonoBehaviour {
     }
 
     public void OpenARMode() {
-        SceneManager.LoadScene("ARMode");
+        Settings.nextScene = Settings.SceneTypes.AR;
+        SceneManager.LoadScene("loadingScene");
     }
 
     public void OpenGEOMode() {
-        SceneManager.LoadScene("MapMode3D");
+        Settings.nextScene = Settings.SceneTypes.GEO;
+        SceneManager.LoadScene("loadingScene");
     }
 
     public void OpenContactMode() {
