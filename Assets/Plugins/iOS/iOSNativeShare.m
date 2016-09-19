@@ -45,6 +45,13 @@ void _makeToast (){
 	
 }
 
+(void) sendWhatsappMessage(){
+
+    NSURL *whatsappURL = [NSURL URLWithString:@"whatsapp://send?text=Hello%2C%20World!"];
+    if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
+        [[UIApplication sharedApplication] openURL: whatsappURL];
+    }}
+
 +(id) withText:(char*)text withURL:(char*)url withImage:(char*)image withSubject:(char*)subject{
 	
 	return [[iOSNativeShare alloc] initWithText:text withURL:url withImage:image withSubject:subject];

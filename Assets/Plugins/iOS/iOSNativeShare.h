@@ -25,6 +25,7 @@ extern "C" {
     
     void _makeToast();
     void showSocialSharing(struct SocialSharingStruct *confStruct);
+	void sendWhatsappMessage();
     
 #ifdef __cplusplus
 }
