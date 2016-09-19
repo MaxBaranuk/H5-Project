@@ -44,4 +44,8 @@ public class MainMenuUIManager : MonoBehaviour {
     {
         SceneManager.LoadScene("infoScene");
     }
+
+    public void Exit() {
+        Application.Quit();
+    }
 }

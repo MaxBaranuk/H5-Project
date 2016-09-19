@@ -49,7 +49,8 @@ public class ServerManager : MonoBehaviour {
     {
         while (true)
         {
- //           WWW www = new WWW("http://192.168.1.105/dashboard");
+            yield return new WaitForSeconds(1);
+            //           WWW www = new WWW("http://192.168.1.105/dashboard");
             WWW www = new WWW("http://www.this-page-intentionally-left-blank.org/");
             
             float waitTime = 2;
@@ -67,7 +68,7 @@ public class ServerManager : MonoBehaviour {
                 hasInternetConnection = true;
             }
 //            connectionInfoPanel.SetActive(!hasInternetConnection);
-            yield return new WaitForSeconds(1);
+            
         }
     }
 

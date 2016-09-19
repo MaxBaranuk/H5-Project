@@ -30,7 +30,7 @@
 		<receiver android:name="com.wear_studio.library.UnityNotificationManager"></receiver>
 	     <service            
             android:enabled="true"
-   	         android:name=".CheckService" >
+   	         android:name="com.wear.locationservice.CheckService" >
   	      </service>
         <activity android:name="com.unity3d.player.UnityPlayerNativeActivity"
                   android:label="@string/app_name">

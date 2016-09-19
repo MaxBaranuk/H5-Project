@@ -1,11 +1,21 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Text.RegularExpressions;
+using System.Net.Mail;
+using System;
 
 public class AgentSceneManager : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    
+    public GameObject contactMeForm;
+    public InputField nameInputField;
+    public InputField emailInputField;
+    public InputField phoneInputField;
+    public Button callMeButton;
+    // Use this for initialization
+    void Start () {
 	
 	}
 	
@@ -39,7 +49,14 @@ public class AgentSceneManager : MonoBehaviour {
     }
 
     public void MakeChat() {
+        AndroidJavaClass unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
+        AndroidJavaClass customClass = new AndroidJavaClass("com.wear.locationservice.UnityLocationService");
+        customClass.CallStatic("SendWhatsappMessage", unityActivity, "My Message");
+    }
 
+    public void ContactMe() {
+        contactMeForm.SetActive(true);
     }
 
     public void ExitToMenu() {
@@ -49,5 +66,29 @@ public class AgentSceneManager : MonoBehaviour {
     string MyEscapeURL(string url)
     {
         return WWW.EscapeURL(url).Replace("+", "%20");
+    }
+
+    public void CheckValidData() {
+
+        bool isValid = phoneInputField.text.Length > 5 | (emailInputField.text.Length > 5 & ValidateEmail(emailInputField.text));
+        callMeButton.interactable = isValid;
+    }
+
+    public void SendContactRequest() {
+        contactMeForm.SetActive(false);
+    }
+
+    public void CloseContactMeForm() {
+        contactMeForm.SetActive(false);
+    }
+
+
+    bool ValidateEmail(string email) {
+        Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+        Match match = regex.Match(email);
+        if (match.Success)
+            return true;
+        else
+            return false;
     }
 }

@@ -9,6 +9,7 @@ countries.
 using UnityEngine;
 using Vuforia;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 /// <summary>
 /// A custom handler that implements the ITrackableEventHandler interface.
 /// </summary>
@@ -72,18 +73,21 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
 
     private void OnTrackingFound()
     {
-//        g.SetActive(true);
+        //object visible
         string id = mTrackableBehaviour.Trackable.Name;
-//        id = id.Substring(0, id.Length - 4);
         info.text = id;
-        StartCoroutine(ServerManager.instanse.getObjectByTargetID(id));
-        agentButton.SetActive(true);
-        ServerManager.instanse.status += "";
-        //        mo.ShowObject();
-        //            if (id == "customTarget") {
-        //GameObject go = Instantiate(g);
-        //go.transform.parent = transform;
-        //           }  
+
+        if (id == "ananas_group")
+        {
+            StartCoroutine(ServerManager.instanse.getObjectByTargetID(id));
+            agentButton.SetActive(true);
+            ServerManager.instanse.status += "";
+        }
+        if(id=="customTarget") {
+            // link
+            SceneManager.LoadScene("WebView");
+        }
+
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
         Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 
@@ -119,11 +123,14 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
             objectTracker.TargetFinder.StartRecognition();
         }
 
-        //        g.SetActive(false);
+        if (currObject != null) {
+            Destroy(currObject);
+        }
         info.text = "clear";
-        ServerManager.instanse.status = "";
-        Destroy(currObject);
+        ServerManager.instanse.status = "";      
         agentButton.SetActive(false);
+
+
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
         Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 
