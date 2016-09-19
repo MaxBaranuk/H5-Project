@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using System.Text.RegularExpressions;
 using System.Net.Mail;
 using System;
+using System.Runtime.InteropServices;
 
 public class AgentSceneManager : MonoBehaviour {
 
@@ -14,6 +15,11 @@ public class AgentSceneManager : MonoBehaviour {
     public InputField emailInputField;
     public InputField phoneInputField;
     public Button callMeButton;
+
+#if UNITY_IOS
+    [DllImport("__Internal")]
+    private static extern void sendWhatsappMessage();
+#endif
     // Use this for initialization
     void Start () {
 	
@@ -49,14 +55,19 @@ public class AgentSceneManager : MonoBehaviour {
     }
 
     public void MakeChat() {
+#if INITY_ANDROID
         AndroidJavaClass unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
         AndroidJavaClass customClass = new AndroidJavaClass("com.wear.locationservice.UnityLocationService");
         customClass.CallStatic("SendWhatsappMessage", unityActivity, "My Message");
+#elif UNITY_IOS
+        sendWhatsappMessage();
+#endif
     }
 
     public void ContactMe() {
         contactMeForm.SetActive(true);
+
     }
 
     public void ExitToMenu() {
