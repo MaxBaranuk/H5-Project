@@ -1,18 +1,34 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using System.Text.RegularExpressions;
+using System.Net.Mail;
+using System;
+using System.Runtime.InteropServices;
 
 public class AgentSceneManager : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    
+    public GameObject contactMeForm;
+    public InputField nameInputField;
+    public InputField emailInputField;
+    public InputField phoneInputField;
+    public Button callMeButton;
+
+#if UNITY_IOS
+    [DllImport("__Internal")]
+    private static extern void sendWhatsappMessage();
+#endif
+ //   // Use this for initialization
+ //   void Start () {
 	
-	}
+	//}
 	
-	// Update is called once per frame
-	void Update () {
+	//// Update is called once per frame
+	//void Update () {
 	
-	}
+	//}
 
     public void MakeCall() {
         Application.OpenURL("tel://2468461321");
@@ -39,6 +55,18 @@ public class AgentSceneManager : MonoBehaviour {
     }
 
     public void MakeChat() {
+#if INITY_ANDROID
+        AndroidJavaClass unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        AndroidJavaObject unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
+        AndroidJavaClass customClass = new AndroidJavaClass("com.wear.locationservice.UnityLocationService");
+        customClass.CallStatic("SendWhatsappMessage", unityActivity, "My Message");
+#elif UNITY_IOS
+        sendWhatsappMessage();
+#endif
+    }
+
+    public void ContactMe() {
+        contactMeForm.SetActive(true);
 
     }
 
@@ -49,5 +77,29 @@ public class AgentSceneManager : MonoBehaviour {
     string MyEscapeURL(string url)
     {
         return WWW.EscapeURL(url).Replace("+", "%20");
+    }
+
+    public void CheckValidData() {
+
+        bool isValid = phoneInputField.text.Length > 5 | (emailInputField.text.Length > 5 & ValidateEmail(emailInputField.text));
+        callMeButton.interactable = isValid;
+    }
+
+    public void SendContactRequest() {
+        contactMeForm.SetActive(false);
+    }
+
+    public void CloseContactMeForm() {
+        contactMeForm.SetActive(false);
+    }
+
+
+    bool ValidateEmail(string email) {
+        Regex regex = new Regex(@"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$");
+        Match match = regex.Match(email);
+        if (match.Success)
+            return true;
+        else
+            return false;
     }
 }

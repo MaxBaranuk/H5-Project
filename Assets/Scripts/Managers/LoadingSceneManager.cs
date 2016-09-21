@@ -1,24 +1,33 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class LoadingSceneManager : MonoBehaviour {
 
+    AsyncOperation async;
+    public Transform panel;
+    public GameObject [] animatedImages;
+    public Text info;
     void Awake() {
 
     }
 	// Use this for initialization
 	void Start () {
-        switch (Settings.nextScene) {
+ //       images =  GameObject.FindGameObjectsWithTag("AnimatedPoint");
+ //       StartCoroutine(LoadingAnimation());
+
+        switch (Settings.nextScene)
+        {
             case Settings.SceneTypes.AR:
                 StartCoroutine(LoadALevel("ARMode"));
                 break;
             case Settings.SceneTypes.GEO:
                 StartCoroutine(LoadALevel("MapMode3D"));
                 break;
-
         }
-       
+
     }
 	
 	// Update is called once per frame
@@ -26,9 +35,17 @@ public class LoadingSceneManager : MonoBehaviour {
 	
 	}
 
+    //IEnumerator LoadingAnimation() {
+    //    for (int i = 0; i < animatedImages.Length; i++) {
+    //        animatedImages[i].SetActive(true);
+    //        yield return new WaitForSeconds(0.3225f);
+    //    }
+    //}
+
     private IEnumerator LoadALevel(string levelName)
     {
-        SceneManager.LoadSceneAsync(levelName);
-        yield return null;
+        async = SceneManager.LoadSceneAsync(levelName);
+        yield return async;
     }
+    
 }
