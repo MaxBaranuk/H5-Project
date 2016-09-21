@@ -6,15 +6,7 @@ public class LoadingPanel : MonoBehaviour {
 
     public GameObject[] animatedImages;
     // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
-
+    
     void OnEnable() {
         StartCoroutine(LoadingAnimation());
     }

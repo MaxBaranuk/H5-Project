@@ -35,7 +35,9 @@ void sendWhatsappMessage(){
     NSURL *whatsappURL = [NSURL URLWithString:@"whatsapp://send?text=Hello%2C%20World!"];
     if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
         [[UIApplication sharedApplication] openURL: whatsappURL];
-    }}
+    }
+	else ShowAlertMessage (@"Error", @"Install WhatsApp");
+	}
 	
 void ShowAlertMessage (NSString *title, NSString *message){
 	

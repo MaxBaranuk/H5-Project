@@ -9,6 +9,7 @@ countries.
 using UnityEngine;
 using Vuforia;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 /// <summary>
 /// A custom handler that implements the ITrackableEventHandler interface.
 /// </summary>
@@ -72,18 +73,20 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
 
     private void OnTrackingFound()
     {
-//        g.SetActive(true);
         string id = mTrackableBehaviour.Trackable.Name;
-//        id = id.Substring(0, id.Length - 4);
+
         info.text = id;
-        StartCoroutine(ServerManager.instanse.getObjectByTargetID(id));
-        agentButton.SetActive(true);
-        ServerManager.instanse.status += "";
-        //        mo.ShowObject();
-        //            if (id == "customTarget") {
-        //GameObject go = Instantiate(g);
-        //go.transform.parent = transform;
-        //           }  
+
+        if (id == "ananas_group")
+        {
+            StartCoroutine(ServerManager.instanse.getObjectByTargetID(id));
+            agentButton.SetActive(true);
+            ServerManager.instanse.status += "";
+        }
+        if (id == "customTarget") {
+            SceneManager.LoadScene("WebView");
+        }
+
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
         Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 

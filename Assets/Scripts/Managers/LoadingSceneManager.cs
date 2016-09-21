@@ -7,12 +7,12 @@ using UnityEngine.UI;
 public class LoadingSceneManager : MonoBehaviour {
 
     AsyncOperation async;
-    public Transform panel;
-    public GameObject [] animatedImages;
+//    public Transform panel;
+//    public GameObject [] animatedImages;
     public Text info;
-    void Awake() {
+    //void Awake() {
 
-    }
+    //}
 	// Use this for initialization
 	void Start () {
  //       images =  GameObject.FindGameObjectsWithTag("AnimatedPoint");
@@ -31,9 +31,9 @@ public class LoadingSceneManager : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
+	//void Update () {
 	
-	}
+	//}
 
     //IEnumerator LoadingAnimation() {
     //    for (int i = 0; i < animatedImages.Length; i++) {

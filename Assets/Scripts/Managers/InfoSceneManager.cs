@@ -19,9 +19,9 @@ public class InfoSceneManager : MonoBehaviour {
     AndroidJavaClass customClass;
 
 #if UNITY_IOS
-    [DllImport("__Internal")]
+ //   [DllImport("__Internal")]
 //    private static extern void applicationDidEnterBackground();
-    private static extern void _makeToast();
+ //   private static extern void _makeToast();
 #endif
     // Use this for initialization
     void Start() {

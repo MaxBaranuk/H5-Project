@@ -6,18 +6,18 @@ using UnityEngine;
 public class AnimatedPoint : MonoBehaviour {
 
     RectTransform rect;
-    LoadingSceneManager manager;
+//    LoadingSceneManager manager;
     // Use this for initialization
     void Start () {
-        manager = GameObject.Find("SceneManager").GetComponent<LoadingSceneManager>();
+//        manager = GameObject.Find("SceneManager").GetComponent<LoadingSceneManager>();
         rect = GetComponent<RectTransform>();
         StartCoroutine(Move());
 	}
 	
 	// Update is called once per frame
-	void Update () {
+	//void Update () {
 		
-	}
+	//}
 
     IEnumerator Move() {
         float step;
@@ -31,7 +31,7 @@ public class AnimatedPoint : MonoBehaviour {
             time += 0.01f;
             if (rect.localPosition.x > 400) {
                 rect.localPosition = new Vector2(-405, rect.localPosition.y);
-                manager.info.text = "" + time;
+//                manager.info.text = "" + time;
                 time = 0;
             } 
         }
