@@ -96,6 +96,9 @@ public class MapUIManager : MonoBehaviour {
         buildingInfoPanel.SetActive(false);
     }
 
+    public void Exit() {
+        SceneManager.LoadScene("main");
+    }
     public void OpenARMode() {
         SceneManager.LoadScene("ARMode");
     }

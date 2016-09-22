@@ -7,12 +7,9 @@ public class ArSceneManager : MonoBehaviour {
     public GameObject connectionInfoPanel;
 
     // Use this for initialization
-    void Awake() {
-//        StartCoroutine(CheckInternetConnection());
-    }
 
-    void Update() {
-        connectionInfoPanel.SetActive(!ServerManager.instanse.hasInternetConnection);
+    public void Exit() {
+        SceneManager.LoadScene("main");
     }
 
     public void OpenAgentScene() {
