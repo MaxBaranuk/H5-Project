@@ -14,6 +14,10 @@ public class ServerManager : MonoBehaviour {
     GameObject currObj;
     public string status;
     public bool hasInternetConnection = true;
+    string key = "5sdGejj8uo74NIbkSNPa9SfoeWioLq1K";
+    public int zoom = 17;
+    LocationInfo loc;
+    public Texture2D currMap;
 
     void Awake() {
         StartCoroutine(CheckInternetConnection());
@@ -21,12 +25,50 @@ public class ServerManager : MonoBehaviour {
 
     void Start () {
         if (instanse == null) instanse = this;
-        DontDestroyOnLoad(instanse);      
+        DontDestroyOnLoad(instanse);
+        Input.location.Start(3, 3);
+        loc = Input.location.lastData;
     }
 
 	void Update () {
 	
 	}
+
+    public void UpdateMapImage() {
+        StartCoroutine(GetMapImage());
+    }
+
+    IEnumerator GetMapImage() {
+        while (true) {
+            string url = "http://open.mapquestapi.com/staticmap/v4/getmap?key=" + key + "&size=1280,1280&zoom=" + zoom + "&type=map&center=" + loc.latitude + "," + loc.longitude;
+            WWW www = new WWW(url);
+            // Wait for download to complete
+            float download = (www.progress);
+
+            yield return new WaitUntil(() => !www.isDone);
+           
+            //Show download progress and apply texture
+            if (www.error == null)
+            {
+                //use the status string variable to print messages to your own user interface (GUIText, etc.)
+//                status = "Updating map 100 %\nMap Ready!";
+                yield return new WaitForSeconds(0.5f);
+                currMap = null;
+                Texture2D tmp;
+                tmp = new Texture2D(1280, 1280, TextureFormat.RGB24, false);
+                currMap = tmp;
+                www.LoadImageIntoTexture(tmp);
+            }
+            //Download Error. Switching to offline mode
+            else {
+                //use the status string variable to print messages to your own user interface (GUIText, etc.)
+                status = "Map Error:" + www.error;
+                yield return new WaitForSeconds(1);
+                currMap = Resources.Load("offline") as Texture2D;
+            }
+            yield return new WaitForSeconds(30);
+        }
+    }
 
     public List<Item> getObjectsList(Vector2 location) {
         List<Item> obj = new List<Item>();     

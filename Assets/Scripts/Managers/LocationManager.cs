@@ -2,7 +2,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using System;
-using com.youvisio;
 using System.Threading;
 
 public class LocationManager : MonoBehaviour {
@@ -10,81 +9,52 @@ public class LocationManager : MonoBehaviour {
 
     public bool hasAR = false;
     public ItemsCollection colletion;
-    LocationInfo lastLocation;
+//    LocationInfo lastLocation;
     public LocationInfo currLocation;
     MapUIManager mapManager;
     public HashSet<Item> nearItems;
-    private BackgroundWorker _backgroundWorker;
     string message = "";
     int count = 0;
     bool hasMessageToSend = false;
+    OnlineMaps map;
+    OnlineMapsTileSetControl mapControl;
+    public GameObject point;
 
     void Awake() {
         mapManager = GetComponent<MapUIManager>();
     }
     // Use this for initialization
     void Start () {
-        colletion = ItemsCollection.Load("Places");
         currLocation = Input.location.lastData;
-        lastLocation = Input.location.lastData;
-        nearItems = new HashSet<Item>();
-        StartBackgroundService();
-        StartCoroutine(UpdateItems());
- //       InvokeRepeating("UpdateItems", 1, 1);
-        if (_backgroundWorker != null) _backgroundWorker.CancelAsync();
-       
- //       if(mapManager.notificationsOn) StartBackgroundService();
-
-        //        InvokeRepeating("CheckForARObjects", 1, 1);
-    }
-	
-	// Update is called once per frame
-	void Update () {
-        currLocation = Input.location.lastData;
-//        if (_backgroundWorker != null) _backgroundWorker.Update();
-        //if (hasMessageToSend) {
-        //    SendNotification(message);
-        //    hasMessageToSend = false;
-        //}
+        //colletion = ItemsCollection.Load("Places");
+        map = GameObject.Find("Map").GetComponent<OnlineMaps>();
+        //mapControl = GameObject.Find("Map").GetComponent<OnlineMapsTileSetControl>();
+        //AddPlaces(colletion);
+        //nearItems = new HashSet<Item>();
     }
 
-    public void StartBackgroundService()
-    {
-        _backgroundWorker = new BackgroundWorker();
-        _backgroundWorker.DoWork += (o, a) =>
-        {
-            //           bool isFinish = false;
-            while (Input.location.isEnabledByUser)
-            {
-                
-                foreach (Item it in colletion.items)
-                {
-                    float dist = getDistanceFromLatLonInKm(Input.location.lastData.latitude, Input.location.lastData.longitude, it.Lat, it.Lon);
-                    bool hasObj = false;
-                    if (dist < 0.1f) hasObj = nearItems.Add(it);
-                    // check for Ar objects
-                    if (hasObj & mapManager.notificationsOn)
-                    {
-                        hasMessageToSend = true;
-                        message = it.Name + " - " + count;
-                        SendNotification(message);
-                    }
-                    if (dist > 0.15f) nearItems.Remove(it);
+    void Update() {
+        currLocation = Input.location.lastData;
+ //       map.latitude = currLocation.latitude;
+ //       map.longitude = currLocation.longitude;
+    }
+    //void LocationUpdater() {
+    //    currLocation = Input.location.lastData;
+    //    map.latitude = currLocation.latitude;
+    //    map.longitude = currLocation.longitude;
+    //}
 
-                    if (nearItems.Count > 0) hasAR = true;
-                    else hasAR = false;
+    void AddPlaces(ItemsCollection places) {
+        foreach (Item it in colletion.items) {
 
-                }
-                _backgroundWorker._thread.Join(500);
-            }
-        };
-        _backgroundWorker.RunWorkerCompleted += (o, a) =>
-        {
-            // executed on main thread
-            // you can use a.Result
-        };
+//            Instantiate(point);
+//            point.GetComponent<OnlineMapsMarker3DInstance>().marker.SetPosition(it.Lon, it.Lat);
 
-        _backgroundWorker.RunWorkerAsync("service");
+            OnlineMapsMarker3D inst = mapControl.AddMarker3D(new Vector2(it.Lon, it.Lat), point);
+            inst.Init(mapControl.transform);
+            //inst.transform.localPosition = new Vector3(transform.localPosition.x,
+            //                                            45, transform.localPosition.z);
+        }
     }
 
     IEnumerator UpdateItems()
@@ -99,38 +69,10 @@ public class LocationManager : MonoBehaviour {
                 if (dist < 2 && !mapManager.itemsOnScene.ContainsKey(it)) mapManager.CreatePoint(it);
                 if (dist > 2 && mapManager.itemsOnScene.ContainsKey(it)) mapManager.DestroyPoint(it);
 
-                //// check for Ar objects
-                //bool hasObj = false;
-                //if (dist < 0.1f) hasObj = nearItems.Add(it);
-                //// check for Ar objects
-                //if (hasObj & mapManager.notificationsOn)
-                //{
-                //    hasMessageToSend = true;
-                //    message = it.Name + " - " + count;
-                //}
-                //if (dist > 0.15f) nearItems.Remove(it);
-
-                //if (nearItems.Count > 0) hasAR = true;
-                //else hasAR = false;
             }
             yield return new WaitForSeconds(10);
         }
     }
-
-    //void CheckForNotification() {
-    //    foreach (Item it in colletion.items)
-    //    {
-    //        float dist = getDistanceFromLatLonInKm(currLocation.latitude, currLocation.longitude, it.Lat, it.Lon);
-
-    //        // check for Ar objects
-    //        if (nearItems.Add(it)&mapManager.notificationsOn & dist < 0.1f) SendNotification(it.Name);
-    //        if (dist > 0.2f) nearItems.Remove(it);
-
-    //        if (nearItems.Count > 0) hasAR = true;
-    //        else hasAR = false;
-
-    //    }
-    //}
 
     void SendNotification(string name) {
 #if UNITY_ANDROID

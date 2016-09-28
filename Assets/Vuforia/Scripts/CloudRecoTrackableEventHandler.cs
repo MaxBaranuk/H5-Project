@@ -34,7 +34,7 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
     }
 
     void Update() {
-        info.text = ServerManager.instanse.status;
+//        info.text = ServerManager.instanse.status;
     }
     #endregion //MONOBEHAVIOUR_METHODS
 

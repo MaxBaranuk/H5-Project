@@ -55,7 +55,7 @@ public class AgentSceneManager : MonoBehaviour {
     }
 
     public void MakeChat() {
-#if INITY_ANDROID
+#if UNITY_ANDROID
         AndroidJavaClass unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
         AndroidJavaClass customClass = new AndroidJavaClass("com.wear.locationservice.UnityLocationService");

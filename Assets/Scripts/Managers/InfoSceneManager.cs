@@ -25,9 +25,11 @@ public class InfoSceneManager : MonoBehaviour {
 #endif
     // Use this for initialization
     void Start() {
+#if UNITY_ANDROID
         unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
         customClass = new AndroidJavaClass("com.wear.locationservice.UnityLocationService");
+#endif
         //       Application.runInBackground = true;
     }
 

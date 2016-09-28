@@ -13,4 +13,8 @@ public class ExitListener : MonoBehaviour {
 	void Update () {
         if (Input.GetKeyDown(KeyCode.Escape)) SceneManager.LoadScene("main");
     }
+
+    public void Exit() {
+        SceneManager.LoadScene("main");
+    }
 }

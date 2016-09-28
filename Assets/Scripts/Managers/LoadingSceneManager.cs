@@ -7,27 +7,19 @@ using UnityEngine.UI;
 public class LoadingSceneManager : MonoBehaviour {
 
     AsyncOperation async;
-//    public Transform panel;
-//    public GameObject [] animatedImages;
     public Text info;
-    //void Awake() {
 
-    //}
 	// Use this for initialization
 	void Start () {
- //       images =  GameObject.FindGameObjectsWithTag("AnimatedPoint");
- //       StartCoroutine(LoadingAnimation());
-
         switch (Settings.nextScene)
         {
             case Settings.SceneTypes.AR:
                 StartCoroutine(LoadALevel("ARMode"));
                 break;
             case Settings.SceneTypes.GEO:
-                StartCoroutine(LoadALevel("MapMode3D"));
+                StartCoroutine(LoadALevel("Map"));
                 break;
         }
-
     }
 	
 	// Update is called once per frame
