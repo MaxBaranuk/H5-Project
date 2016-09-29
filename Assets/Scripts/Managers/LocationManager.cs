@@ -7,17 +7,17 @@ using System.Threading;
 public class LocationManager : MonoBehaviour {
 
 
-    public bool hasAR = false;
+    public bool hasAR = true;
     public ItemsCollection colletion;
 //    LocationInfo lastLocation;
     public LocationInfo currLocation;
     MapUIManager mapManager;
     public HashSet<Item> nearItems;
-    string message = "";
+//    string message = "";
     int count = 0;
     bool hasMessageToSend = false;
-    OnlineMaps map;
-    OnlineMapsTileSetControl mapControl;
+//    OnlineMaps map;
+//    OnlineMapsTileSetControl mapControl;
     public GameObject point;
 
     void Awake() {
@@ -27,7 +27,7 @@ public class LocationManager : MonoBehaviour {
     void Start () {
         currLocation = Input.location.lastData;
         //colletion = ItemsCollection.Load("Places");
-        map = GameObject.Find("Map").GetComponent<OnlineMaps>();
+//        map = GameObject.Find("Map").GetComponent<OnlineMaps>();
         //mapControl = GameObject.Find("Map").GetComponent<OnlineMapsTileSetControl>();
         //AddPlaces(colletion);
         //nearItems = new HashSet<Item>();
@@ -50,8 +50,8 @@ public class LocationManager : MonoBehaviour {
 //            Instantiate(point);
 //            point.GetComponent<OnlineMapsMarker3DInstance>().marker.SetPosition(it.Lon, it.Lat);
 
-            OnlineMapsMarker3D inst = mapControl.AddMarker3D(new Vector2(it.Lon, it.Lat), point);
-            inst.Init(mapControl.transform);
+ //           OnlineMapsMarker3D inst = mapControl.AddMarker3D(new Vector2(it.Lon, it.Lat), point);
+ //           inst.Init(mapControl.transform);
             //inst.transform.localPosition = new Vector3(transform.localPosition.x,
             //                                            45, transform.localPosition.z);
         }

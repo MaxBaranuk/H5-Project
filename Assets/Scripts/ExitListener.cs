@@ -4,6 +4,8 @@ using UnityEngine.SceneManagement;
 
 public class ExitListener : MonoBehaviour {
 
+    public GameObject exitPopup;
+
 	// Use this for initialization
 	void Start () {
 //        StartCoroutine(ServerManager.instanse.getObjectByTargetID(""));
@@ -11,10 +13,6 @@ public class ExitListener : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetKeyDown(KeyCode.Escape)) SceneManager.LoadScene("main");
-    }
-
-    public void Exit() {
-        SceneManager.LoadScene("main");
+        if (Input.GetKeyDown(KeyCode.Escape)) exitPopup.SetActive(true);
     }
 }
