@@ -80,7 +80,11 @@ public class MapUIManager : MonoBehaviour {
     
 	// Update is called once per frame
 	void Update () {
+
         connectionInfoPanel.SetActive(!ServerManager.instanse.hasInternetConnection);
+
+
+
 //        if (locationManager.hasAR) ARButton.SetActive(true);
 //        else ARButton.SetActive(false);
        
@@ -107,7 +111,8 @@ public class MapUIManager : MonoBehaviour {
         
     }
     public void OpenARMode() {
-        SceneManager.LoadScene("ARMode");
+        Settings.nextScene = Settings.SceneTypes.AR;
+        SceneManager.LoadScene("loadingScene");
     }
 
     public void OpenFilterPanel()

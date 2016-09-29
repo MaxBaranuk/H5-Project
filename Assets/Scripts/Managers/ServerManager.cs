@@ -24,10 +24,12 @@ public class ServerManager : MonoBehaviour {
     }
 
     void Start () {
-        if (instanse == null) instanse = this;
-        DontDestroyOnLoad(instanse);
-        Input.location.Start(3, 3);
-        loc = Input.location.lastData;
+        if (instanse == null) {
+            instanse = this;
+            DontDestroyOnLoad(instanse);
+            Input.location.Start(3, 3);
+            loc = Input.location.lastData;
+        } 
     }
 
 	void Update () {

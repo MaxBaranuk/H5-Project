@@ -25,10 +25,11 @@ public class MapObjectsManager : MonoBehaviour {
     {
         foreach (Item it in items.Values)
         {
-            if (getDistanceFromLatLonInKm((float) map.latitude,(float) map.longitude, it.Lat, it.Lon) < 10000) {
+ //           if (getDistanceFromLatLonInKm((float) map.latitude,(float) map.longitude, it.Lat, it.Lon) < 10000) {
                 OnlineMapsMarker3D inst = mapControl.AddMarker3D(new Vector2(it.Lon, it.Lat), itemPrefabs[0]);
+                inst.label = it.Name;
                 inst.Init(mapControl.transform);
-            }           
+//            }           
         }
     }
 
@@ -38,7 +39,11 @@ public class MapObjectsManager : MonoBehaviour {
 	}
 
     List<int> LoadAllObjectIDs() {
-        List<int> ids = new List<int> {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+//        List<int> ids = new List<int> {0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20};
+        List<int> ids = new List<int>();
+        for (int i = 0; i < 30; i++) {
+            ids.Add(i);
+        }
         return ids;
     }
 
@@ -57,8 +62,8 @@ public class MapObjectsManager : MonoBehaviour {
         Item i = new Item();
         i.id = id;
         i.info = "text";
-        i.Lat = UnityEngine.Random.Range(-180, 180);
-        i.Lon = UnityEngine.Random.Range(-50, 70);
+        i.Lat = UnityEngine.Random.Range(-80, 80);
+        i.Lon = UnityEngine.Random.Range(-180, 180);
         i.Name = "Item - " + id;
         i.type = "Home";
         MapObjectsCache.items.Add(id, i);

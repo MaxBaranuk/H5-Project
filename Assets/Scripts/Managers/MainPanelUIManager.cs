@@ -23,6 +23,7 @@ public class MainPanelUIManager : MonoBehaviour {
     public GameObject exitPopupPanel;
     public Button exitMenuButton;
     public Button agentButton;
+    public GameObject infoPanel;
 
 #if UNITY_IOS
     [DllImport("__Internal")]
@@ -58,6 +59,20 @@ public class MainPanelUIManager : MonoBehaviour {
     {
         menuPanel.SetActive(false);
         agentPanel.SetActive(true);
+    }
+
+    public void OpenInfoPanel() {
+        infoPanel.SetActive(true);
+        menuPanel.SetActive(false);
+    }
+
+    public void OpenAboutPanel() {
+
+    }
+
+    public void CloseInfoPanel() {
+        infoPanel.SetActive(false);
+        menuPanel.SetActive(true);
     }
 
     public void CloseMenu() {
