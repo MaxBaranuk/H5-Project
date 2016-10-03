@@ -14,9 +14,9 @@ public class ServerManager : MonoBehaviour {
     GameObject currObj;
     public string status;
     public bool hasInternetConnection = true;
-    string key = "5sdGejj8uo74NIbkSNPa9SfoeWioLq1K";
+//    string key = "5sdGejj8uo74NIbkSNPa9SfoeWioLq1K";
     //public int zoom = 17;
-    LocationInfo loc;
+//    LocationInfo loc;
 //    public Texture2D currMap;
 
     void Awake() {
@@ -28,7 +28,7 @@ public class ServerManager : MonoBehaviour {
             instanse = this;
             DontDestroyOnLoad(instanse);
             Input.location.Start(3, 3);
-            loc = Input.location.lastData;
+//            loc = Input.location.lastData;
         } 
     }
 
@@ -72,10 +72,10 @@ public class ServerManager : MonoBehaviour {
 //        }
 //    }
 
-    public List<Item> getObjectsList(Vector2 location) {
-        List<Item> obj = new List<Item>();     
-        return obj;
-    }
+    //public List<Item> getObjectsList(Vector2 location) {
+    //    List<Item> obj = new List<Item>();     
+    //    return obj;
+    //}
 
     public Agent getAgentInfo(string agentID)
     {

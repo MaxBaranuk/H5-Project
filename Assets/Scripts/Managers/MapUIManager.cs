@@ -3,6 +3,9 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Collections.Generic;
+using WeAr.H5.Domain.Model;
+using WeAr.H5.Domain.Model.Enums;
+using Text = UnityEngine.UI.Text;
 
 public class MapUIManager : MonoBehaviour {
 
@@ -16,14 +19,12 @@ public class MapUIManager : MonoBehaviour {
     public Toggle officeToggle;
     public Toggle stockToggle;
     public Toggle hangarToggle;
-    HashSet<string> activeToggles;
+    HashSet<EObjectItemType> activeToggles;
     [HideInInspector]
-    public Dictionary<Item, GameObject> itemsOnScene;
+    public Dictionary<ObjectItem, GameObject> itemsOnScene;
     public GameObject connectionInfoPanel;
-    //    GameObject user;
 
     public GameObject buildingInfoPanel;
-//    MapNav map;
     public Text info;
     public Text loadInfo;
     public GameObject loadpanel;
@@ -35,69 +36,49 @@ public class MapUIManager : MonoBehaviour {
     
     public delegate void MapZoomEvent(float zoom);
     public static event MapZoomEvent ZoomEvent;
-    
-
-//    LocationManager locationManager;
 
     void Awake() {
-        activeToggles = new HashSet<string>();
-        itemsOnScene = new Dictionary<Item, GameObject>();
-        activeToggles.Add("Appartment");
-        activeToggles.Add("House");
-        activeToggles.Add("Office");
-        activeToggles.Add("Area");
+        activeToggles = new HashSet<EObjectItemType>();
+        itemsOnScene = new Dictionary<ObjectItem, GameObject>();
+        activeToggles.Add(EObjectItemType.House);
+        activeToggles.Add(EObjectItemType.Flat);
+        activeToggles.Add(EObjectItemType.Area);
+//        activeToggles.Add("Area");
         houseToggle.onValueChanged.AddListener((value) => {
-            if (value) activeToggles.Add("House");
-            else activeToggles.Remove("House");
-            UpdateItemsAfterTypeChange();
+            if (value) activeToggles.Add(EObjectItemType.House);
+            else activeToggles.Remove(EObjectItemType.House);
+//            UpdateItemsAfterTypeChange();
         });
         appartToggle.onValueChanged.AddListener((value) =>{
-            if (value) activeToggles.Add("Appartment");
-            else activeToggles.Remove("Appartment");
-            UpdateItemsAfterTypeChange();
+            if (value) activeToggles.Add(EObjectItemType.Flat);
+            else activeToggles.Remove(EObjectItemType.Flat);
+//            UpdateItemsAfterTypeChange();
          });
         
         officeToggle.onValueChanged.AddListener((value) => {
-            if (value) activeToggles.Add("Office");
-            else activeToggles.Remove("Office");
-            UpdateItemsAfterTypeChange();
+            if (value) activeToggles.Add(EObjectItemType.Area);
+            else activeToggles.Remove(EObjectItemType.Area);
+ //           UpdateItemsAfterTypeChange();
         });
-        stockToggle.onValueChanged.AddListener((value) => {
-            if (value) activeToggles.Add("Stock");
-            else activeToggles.Remove("Stock");
-            UpdateItemsAfterTypeChange();
-        });
-        hangarToggle.onValueChanged.AddListener((value) => {
-            if (value) activeToggles.Add("Hangar");
-            else activeToggles.Remove("Hangar");
-            UpdateItemsAfterTypeChange();
-        });
+        //stockToggle.onValueChanged.AddListener((value) => {
+        //    if (value) activeToggles.Add("Stock");
+        //    else activeToggles.Remove("Stock");
+        //    UpdateItemsAfterTypeChange();
+        //});
+        //hangarToggle.onValueChanged.AddListener((value) => {
+        //    if (value) activeToggles.Add("Hangar");
+        //    else activeToggles.Remove("Hangar");
+        //    UpdateItemsAfterTypeChange();
+        //});
     }
 
     void Start () {      
-//        map = GameObject.Find("Map").GetComponent<MapNav>();
     }
     
 	// Update is called once per frame
 	void Update () {
 
-        connectionInfoPanel.SetActive(!ServerManager.instanse.hasInternetConnection);
-
-
-
-//        if (locationManager.hasAR) ARButton.SetActive(true);
-//        else ARButton.SetActive(false);
-       
-//        loadInfo.text = map.status;
-        //if (map.ready&&loadpanel.activeSelf)
-        //{
-        //    uiPanel.SetActive(true);
-        //    loadpanel.SetActive(false);
-        //}
-
-//        if(map.mapping) info.text = "Updating map " + System.Math.Round(map.download * 100) + " %";
-//        else info.text = "" + locationManager.colletion.items.Length;
-
+ //       connectionInfoPanel.SetActive(!ServerManager.instanse.hasInternetConnection);
         UserInput();
     }
 
@@ -148,27 +129,18 @@ public class MapUIManager : MonoBehaviour {
 #endif
     }
 
-    //public void RescaleItems() {
-    //    ZoomEvent(map.zoom);
-    //    //GameObject[] items = GameObject.FindGameObjectsWithTag("Building");
-    //    //foreach (GameObject g in items) {
-    //    //    g.GetComponent<ItemScale>().Rescale(map.zoom);
-    //    //}
-    //}
-
-
-    public void CreatePoint(Item it) {
+    public void CreatePoint(ObjectItem it) {
         
         GameObject currItem = Instantiate(point);
         itemsOnScene.Add(it, currItem);
         SetGeolocation go = currItem.GetComponent<SetGeolocation>();
-        go.lat = it.Lat;
-        go.lon = it.Lon;
+        go.lat = it.Latitude;
+        go.lon = it.Longitude;
         currItem.name = it.Name;
         currItem.SetActive(true);
     }
 
-    public void DestroyPoint(Item it) {
+    public void DestroyPoint(ObjectItem it) {
         itemsOnScene.Remove(it);
         GameObject currItem = GameObject.Find(it.Name);
         Destroy(currItem);
@@ -177,19 +149,18 @@ public class MapUIManager : MonoBehaviour {
     public void ChangeNotificationStatus() {
         notificationsOn = !notificationsOn;
         Application.runInBackground = notificationsOn;
-//        locationManager.StartBackgroundService();
     }
 
     
 
-    void UpdateItemsAfterTypeChange() {
+    //void UpdateItemsAfterTypeChange() {
 
-        Dictionary<Item, GameObject>.KeyCollection keyColl = itemsOnScene.Keys;
-        IEnumerator<Item> ie = keyColl.GetEnumerator();
-        while (ie.MoveNext()) {
+    //    Dictionary<ObjectItem, GameObject>.KeyCollection keyColl = itemsOnScene.Keys;
+    //    IEnumerator<ObjectItem> ie = keyColl.GetEnumerator();
+    //    while (ie.MoveNext()) {
 
-            if (activeToggles.Contains(ie.Current.type)) itemsOnScene[ie.Current].SetActive(true);
-            else itemsOnScene[ie.Current].SetActive(false);
-        }
-    }
+    //        if (activeToggles.Contains(ie.Current.Type)) itemsOnScene[ie.Current].SetActive(true);
+    //        else itemsOnScene[ie.Current].SetActive(false);
+    //    }
+    //}
 }
