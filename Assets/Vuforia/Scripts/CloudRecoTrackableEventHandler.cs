@@ -18,8 +18,11 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
     public GameObject currObject;
     public Text info;
     public GameObject agentButton;
+    public GameObject mainMenu;
+    private bool currMenuStateIsActive;
     #region PRIVATE_MEMBERS
     private TrackableBehaviour mTrackableBehaviour;
+    private ObjectTracker objectTracker;
     #endregion // PRIVATE_MEMBERS
 
 
@@ -31,9 +34,16 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
         {
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
         }
+        objectTracker = TrackerManager.Instance.GetTracker<ObjectTracker>();
     }
 
     void Update() {
+        if (currMenuStateIsActive != mainMenu.activeInHierarchy)
+        {
+            currMenuStateIsActive = mainMenu.activeInHierarchy;
+            if (currMenuStateIsActive) objectTracker.TargetFinder.Stop();
+            else objectTracker.TargetFinder.StartRecognition();
+        }
 //        info.text = ServerManager.instanse.status;
     }
     #endregion //MONOBEHAVIOUR_METHODS
@@ -103,7 +113,7 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
         }
 
         // Stop finder since we have now a result, finder will be restarted again when we lose track of the result
-        ObjectTracker objectTracker = TrackerManager.Instance.GetTracker<ObjectTracker>();
+        
         if (objectTracker != null)
         {
             objectTracker.TargetFinder.Stop();
@@ -115,7 +125,6 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
     private void OnTrackingLost()
     {
 
-        ObjectTracker objectTracker = TrackerManager.Instance.GetTracker<ObjectTracker>();
         if (objectTracker != null)
         {
             objectTracker.TargetFinder.ClearTrackables(false);

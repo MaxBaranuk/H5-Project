@@ -13,6 +13,7 @@ public class MapUIManager : MonoBehaviour {
     public GameObject mainMenuPanel;
     public GameObject ARButton;
     public GameObject filterPanel;
+    public GameObject objectItemInfoPanel;
     public Button filterButton;
     public Toggle houseToggle;
     public Toggle appartToggle;
@@ -23,8 +24,10 @@ public class MapUIManager : MonoBehaviour {
     [HideInInspector]
     public Dictionary<ObjectItem, GameObject> itemsOnScene;
     public GameObject connectionInfoPanel;
+    public GameObject GPSInfoPanel;
+    //    public GameObject connectionInfoPanel;
 
-    public GameObject buildingInfoPanel;
+    //    public GameObject buildingInfoPanel;
     public Text info;
     public Text loadInfo;
     public GameObject loadpanel;
@@ -72,18 +75,24 @@ public class MapUIManager : MonoBehaviour {
         //});
     }
 
-    void Start () {      
+    void Start () {
+        InvokeRepeating("UpdateConnection", 0, 1);
     }
     
 	// Update is called once per frame
-	void Update () {
-
- //       connectionInfoPanel.SetActive(!ServerManager.instanse.hasInternetConnection);
+	void Update () {    
         UserInput();
     }
 
+    void UpdateConnection()
+    {
+        connectionInfoPanel.SetActive(!ServerManager.instanse.hasInternetConnection);
+        bool disable = Input.location.lastData.longitude==0&&Input.location.lastData.latitude==0;
+        GPSInfoPanel.SetActive(disable);
+    }
+
     public void CloseInfoBuildingPanel() {
-        buildingInfoPanel.SetActive(false);
+        objectItemInfoPanel.SetActive(false);
     }
 
     public void OpenMainMenu() {
@@ -112,39 +121,39 @@ public class MapUIManager : MonoBehaviour {
 #if UNITY_EDITOR
 
 #else
-        if (Input.GetTouch(0).phase == TouchPhase.Began)
-        {
-            Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
-            RaycastHit hit;
+        //if (Input.GetTouch(0).phase == TouchPhase.Began)
+        //{
+        //    Ray ray = Camera.main.ScreenPointToRay(Input.GetTouch(0).position);
+        //    RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, 10000) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
-            {
-                if (hit.transform.gameObject.tag == "Building")
-                {
-                    itemInfoName.text = hit.transform.gameObject.name;
-                    buildingInfoPanel.SetActive(true);
-                }
-            }
-        }
+        //    if (Physics.Raycast(ray, out hit, 10000) && !UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject())
+        //    {
+        //        if (hit.transform.gameObject.tag == "Building")
+        //        {
+        //            itemInfoName.text = hit.transform.gameObject.name;
+        //            buildingInfoPanel.SetActive(true);
+        //        }
+        //    }
+        //}
 #endif
     }
 
-    public void CreatePoint(ObjectItem it) {
+    //public void CreatePoint(ObjectItem it) {
         
-        GameObject currItem = Instantiate(point);
-        itemsOnScene.Add(it, currItem);
-        SetGeolocation go = currItem.GetComponent<SetGeolocation>();
-        go.lat = it.Latitude;
-        go.lon = it.Longitude;
-        currItem.name = it.Name;
-        currItem.SetActive(true);
-    }
+    //    GameObject currItem = Instantiate(point);
+    //    itemsOnScene.Add(it, currItem);
+    //    SetGeolocation go = currItem.GetComponent<SetGeolocation>();
+    //    go.lat = it.Latitude;
+    //    go.lon = it.Longitude;
+    //    currItem.name = it.Name;
+    //    currItem.SetActive(true);
+    //}
 
-    public void DestroyPoint(ObjectItem it) {
-        itemsOnScene.Remove(it);
-        GameObject currItem = GameObject.Find(it.Name);
-        Destroy(currItem);
-    }
+    //public void DestroyPoint(ObjectItem it) {
+    //    itemsOnScene.Remove(it);
+    //    GameObject currItem = GameObject.Find(it.Name);
+    //    Destroy(currItem);
+    //}
 
     public void ChangeNotificationStatus() {
         notificationsOn = !notificationsOn;

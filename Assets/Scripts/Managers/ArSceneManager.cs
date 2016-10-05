@@ -13,9 +13,13 @@ public class ArSceneManager : MonoBehaviour
     public Button photoButton;
     public Button mapButton;
     public Button menuButton;
-    bool _isProcessing = false;
+    bool _isProcessing;
 
     // Use this for initialization
+    void Update()
+    {
+        connectionInfoPanel.SetActive(!ServerManager.instanse.hasInternetConnection);
+    }
 
     public void ToMap()
     {

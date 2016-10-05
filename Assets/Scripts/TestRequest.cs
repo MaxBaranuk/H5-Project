@@ -20,6 +20,22 @@ public class TestRequest : MonoBehaviour
 	void Update () {
 	
 	}
+
+    public void FacebookShare()
+    {
+
+    }
+
+    public void TwitterShare()
+    {
+
+    }
+
+    public void InstagramShare()
+    {
+
+    }
+
     public void Connect()
     {
 

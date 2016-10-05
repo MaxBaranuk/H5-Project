@@ -24,20 +24,27 @@ public class MainPanelUIManager : MonoBehaviour {
     public Button exitMenuButton;
     public Button agentButton;
     public GameObject infoPanel;
+    public GameObject contactH5panel;
+    public GameObject howToUsePanel;
+    public GameObject aboutPanel;
+    public Text versionTextView;
+    
 
 #if UNITY_IOS
     [DllImport("__Internal")]
     private static extern void sendWhatsappMessage();
 #endif
     // Use this for initialization
-    void Start () {
-	
-	}
+    void Start ()
+    {
+        versionTextView.text = "Version: "+Application.version;
+
+    }
 	
 	// Update is called once per frame
 	void Update () {
-	
-	}
+
+    }
 
     public void OpenExitPopup() {
         exitPopupPanel.SetActive(true);
@@ -61,27 +68,64 @@ public class MainPanelUIManager : MonoBehaviour {
         agentPanel.SetActive(true);
     }
 
+    public void CloseAgentPanel()
+    {
+        agentPanel.SetActive(false);
+        mainMenuPanel.SetActive(false);
+    }
     public void OpenInfoPanel() {
         infoPanel.SetActive(true);
         menuPanel.SetActive(false);
     }
 
-    public void OpenAboutPanel() {
-
-    }
-
-    public void CloseInfoPanel() {
+    public void CloseInfoPanel()
+    {
         infoPanel.SetActive(false);
         menuPanel.SetActive(true);
     }
 
-    public void CloseMenu() {
+    public void OpenAboutPanel() {
+        aboutPanel.SetActive(true);
         menuPanel.SetActive(false);
-        mainMenuPanel.SetActive(false);
     }
 
-    public void CloseAgentPanel() {
-        agentPanel.SetActive(false);
+    public void CloseAboutPanel()
+    {
+        aboutPanel.SetActive(false);
+        menuPanel.SetActive(true);
+    }
+
+    public void OpenContactH5Panel()
+    {
+        contactH5panel.SetActive(true);
+        infoPanel.SetActive(false);
+    }
+
+    public void CloseContactH5Panel()
+    {
+        contactH5panel.SetActive(false);
+        infoPanel.SetActive(true);
+    }
+
+    public void OpenHowToUsePanel()
+    {
+        howToUsePanel.SetActive(true);
+        infoPanel.SetActive(false);
+    }
+
+    public void CloseHowToUsePanel()
+    {
+        howToUsePanel.SetActive(false);
+        infoPanel.SetActive(true);
+    }
+
+    public void SendContactH5Request()
+    {
+
+    }
+
+    public void CloseMenu() {
+        menuPanel.SetActive(false);
         mainMenuPanel.SetActive(false);
     }
 

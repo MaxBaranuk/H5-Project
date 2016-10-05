@@ -5,6 +5,7 @@ using System;
 using System.Runtime.InteropServices;
 using WeAr.H5.Domain.Model;
 using WeAr.H5.WebAPI.Client;
+using UnityEngine.UI;
 
 public class MapObjectsManager : MonoBehaviour {
 
@@ -12,13 +13,20 @@ public class MapObjectsManager : MonoBehaviour {
     public GameObject[] itemPrefabs;
     public GameObject userPointPrefab;
     private OnlineMapsMarker3D userPoint;
+    public GameObject objectItemInfoPanel;
+    public UnityEngine.UI.Text infoTitle;
+
+    void OnEnable()
+    {
+        Input.location.Start();
+    }
 
     // Use this for initialization
     void Start () {
         mapControl = GameObject.Find("Map").GetComponent<OnlineMapsTileSetControl>();
         Settings.LoadMapObjects();
         DownloadNewItems(LoadAllObjectIDs());
-        AddPlaces(MapObjectsCache.items);
+        AddPlaces(MapObjectsCache.items);      
         AddUserPoint();
     }
 
@@ -27,7 +35,16 @@ public class MapObjectsManager : MonoBehaviour {
         foreach (ObjectItem it in items.Values)
         {
                 OnlineMapsMarker3D inst = mapControl.AddMarker3D(new Vector2(it.Longitude, it.Latitude), itemPrefabs[0]);
+                inst.customData = it;
                 inst.label = it.Name;
+
+            Action<OnlineMapsMarkerBase> action = delegate (OnlineMapsMarkerBase marker)
+            {
+                 ObjectItem item =(ObjectItem) marker.customData;
+                 infoTitle.text = item.Name;
+                 objectItemInfoPanel.SetActive(true);
+            };
+                inst.OnClick = action;
                 inst.Init(mapControl.transform);     
         }
     }
@@ -40,8 +57,7 @@ public class MapObjectsManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-//        userPoint.SetPosition(Input.location.lastData.longitude, Input.location.lastData.latitude);
-
+        userPoint.SetPosition(Input.location.lastData.longitude, Input.location.lastData.latitude);
     }
 
     List<int> LoadAllObjectIDs() {
@@ -79,5 +95,6 @@ public class MapObjectsManager : MonoBehaviour {
 
     void OnDisable() {
         Settings.SaveMapObjects();
+        Input.location.Stop();
     }
 }
