@@ -8,7 +8,7 @@ public class ArSceneManager : MonoBehaviour
 {
 
     public GameObject connectionInfoPanel;
-    public GameObject mainMenuPanel;
+    public GameObject menu;
     public GameObject menuPanel;
     public Button photoButton;
     public Button mapButton;
@@ -40,8 +40,14 @@ public class ArSceneManager : MonoBehaviour
 
     public void OpenMenuPanel()
     {
-        mainMenuPanel.SetActive(true);
-        menuPanel.SetActive(true);
+        StartCoroutine(OpenWithShadow(menuPanel));
+    }
+
+    IEnumerator OpenWithShadow(GameObject panel)
+    {
+        menu.GetComponent<Animator>().SetTrigger("OpenMenu");
+        yield return new WaitForSeconds(0.3f);
+        panel.SetActive(true);
     }
 
     public IEnumerator ShareScreenshot()

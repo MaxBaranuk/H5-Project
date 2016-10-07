@@ -16,6 +16,7 @@ public class MapObjectsManager : MonoBehaviour {
     public GameObject objectItemInfoPanel;
     public UnityEngine.UI.Text infoTitle;
 
+
     void OnEnable()
     {
         Input.location.Start();
@@ -57,7 +58,7 @@ public class MapObjectsManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
-        userPoint.SetPosition(Input.location.lastData.longitude, Input.location.lastData.latitude);
+ //       userPoint.SetPosition(Input.location.lastData.longitude, Input.location.lastData.latitude);
     }
 
     List<int> LoadAllObjectIDs() {
@@ -83,7 +84,7 @@ public class MapObjectsManager : MonoBehaviour {
         try
         {
             ObjectItem i = WebApiClient.SendAndDeserialize<ObjectItem>(EMethod.GET,
-                "http://wear-h5.azurewebsites.net/api/object-items/" + id);
+                "https://wear-h5.azurewebsites.net/api/object-items/" + id);
             MapObjectsCache.items.Add(id, i);
         }
         catch (Exception)

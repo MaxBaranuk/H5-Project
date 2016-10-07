@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 public class MainPanelUIManager : MonoBehaviour {
 
-    public GameObject mainMenuPanel;
+//    public GameObject mainMenuPanel;
     public GameObject menuPanel;
     public GameObject agentPanel;
     public GameObject contactMePanel;
@@ -28,6 +28,7 @@ public class MainPanelUIManager : MonoBehaviour {
     public GameObject howToUsePanel;
     public GameObject aboutPanel;
     public Text versionTextView;
+    private Animator animator;
     
 
 #if UNITY_IOS
@@ -38,7 +39,7 @@ public class MainPanelUIManager : MonoBehaviour {
     void Start ()
     {
         versionTextView.text = "Version: "+Application.version;
-
+        animator = GetComponent<Animator>();
     }
 	
 	// Update is called once per frame
@@ -64,57 +65,77 @@ public class MainPanelUIManager : MonoBehaviour {
 
     public void OpenAgentPanel()
     {
+//        animator.SetTrigger("CloseMenu");
+//        animator.SetTrigger("OpenAgent");
         menuPanel.SetActive(false);
         agentPanel.SetActive(true);
     }
 
     public void CloseAgentPanel()
     {
+        animator.SetTrigger("CloseMenu");
         agentPanel.SetActive(false);
-        mainMenuPanel.SetActive(false);
+//        gameObject.SetActive(false);
     }
     public void OpenInfoPanel() {
+//        animator.SetTrigger("CloseMenu");
+//        animator.SetTrigger("OpenInfo");
         infoPanel.SetActive(true);
         menuPanel.SetActive(false);
     }
 
     public void CloseInfoPanel()
     {
+//        animator.SetTrigger("CloseMenu");
+//        animator.SetTrigger("OpenMenu");
         infoPanel.SetActive(false);
         menuPanel.SetActive(true);
     }
 
     public void OpenAboutPanel() {
+//        animator.SetTrigger("CloseMenu");
+ //       animator.SetTrigger("OpenAbout");
         aboutPanel.SetActive(true);
         menuPanel.SetActive(false);
     }
 
     public void CloseAboutPanel()
     {
-        aboutPanel.SetActive(false);
-        menuPanel.SetActive(true);
+//        animator.SetTrigger("CloseMenu");
+ //       animator.SetTrigger("OpenMenu");
+                aboutPanel.SetActive(false);
+               menuPanel.SetActive(true);
     }
 
     public void OpenContactH5Panel()
     {
+//        animator.SetTrigger("CloseMenu");
+//        animator.SetTrigger("OpenContact");
         contactH5panel.SetActive(true);
         infoPanel.SetActive(false);
     }
 
     public void CloseContactH5Panel()
     {
+        //       animator.SetTrigger("CloseMenu");
+        //       animator.SetTrigger("OpenInfo");
         contactH5panel.SetActive(false);
         infoPanel.SetActive(true);
     }
 
     public void OpenHowToUsePanel()
     {
+//        animator.SetTrigger("CloseMenu");
+ //       animator.SetTrigger("OpenHowTo");
+
         howToUsePanel.SetActive(true);
         infoPanel.SetActive(false);
     }
 
     public void CloseHowToUsePanel()
     {
+//        animator.SetTrigger("CloseMenu");
+//        animator.SetTrigger("OpenInfo");
         howToUsePanel.SetActive(false);
         infoPanel.SetActive(true);
     }
@@ -125,8 +146,9 @@ public class MainPanelUIManager : MonoBehaviour {
     }
 
     public void CloseMenu() {
+        animator.SetTrigger("CloseMenu");
         menuPanel.SetActive(false);
-        mainMenuPanel.SetActive(false);
+//        mainMenuPanel.SetActive(false);
     }
 
     public void ContactMeOpen() {
@@ -159,11 +181,17 @@ public class MainPanelUIManager : MonoBehaviour {
         bool isValid = true;
         switch (currCallType) {
 
+            case 0:
+                if ((phoneInputField.text.Length < 5) && ValidateEmail(emailInputField.text)) isValid = false;
+                    break;
             case 1:
                 if (phoneInputField.text.Length < 5) isValid = false;
                 break;
             case 2:
                 if(emailInputField.text.Length < 5 | !ValidateEmail(emailInputField.text)) isValid = false;
+                break;
+            case 3:
+                if (emailInputField.text.Length < 5 | !ValidateEmail(emailInputField.text)) isValid = false;
                 break;
 
         }
@@ -223,5 +251,12 @@ public class MainPanelUIManager : MonoBehaviour {
         else
             return false;
     }
+
+    //IEnumerator OpenWithShadow(GameObject panel)
+    //{
+    //    animator.SetTrigger("OpenMenu");
+    //    yield return new WaitForSeconds(0.1f);
+    //    panel.SetActive(true);
+    //}
 
 }

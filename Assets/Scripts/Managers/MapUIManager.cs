@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -14,7 +15,7 @@ public class MapUIManager : MonoBehaviour {
     public GameObject ARButton;
     public GameObject filterPanel;
     public GameObject objectItemInfoPanel;
-    public Button filterButton;
+    public GameObject filterButton;
     public Toggle houseToggle;
     public Toggle appartToggle;
     public Toggle officeToggle;
@@ -25,6 +26,7 @@ public class MapUIManager : MonoBehaviour {
     public Dictionary<ObjectItem, GameObject> itemsOnScene;
     public GameObject connectionInfoPanel;
     public GameObject GPSInfoPanel;
+    public Sprite[] filterButtonImages;
     //    public GameObject connectionInfoPanel;
 
     //    public GameObject buildingInfoPanel;
@@ -36,7 +38,7 @@ public class MapUIManager : MonoBehaviour {
     public GameObject point;
     string text;
     public Text itemInfoName;
-    
+
     public delegate void MapZoomEvent(float zoom);
     public static event MapZoomEvent ZoomEvent;
 
@@ -76,7 +78,7 @@ public class MapUIManager : MonoBehaviour {
     }
 
     void Start () {
-        InvokeRepeating("UpdateConnection", 0, 1);
+ //       InvokeRepeating("UpdateConnection", 0, 1);
     }
     
 	// Update is called once per frame
@@ -95,25 +97,35 @@ public class MapUIManager : MonoBehaviour {
         objectItemInfoPanel.SetActive(false);
     }
 
-    public void OpenMainMenu() {
-        mainMenuPanel.SetActive(true);
-        menuPanel.SetActive(true);
-        
+    public void OpenMainMenu()
+    {
+        filterPanel.SetActive(false);
+        StartCoroutine(OpenWithShadow(menuPanel));
     }
     public void OpenARMode() {
         Settings.nextScene = Settings.SceneTypes.AR;
         SceneManager.LoadScene("loadingScene");
     }
 
-    public void OpenFilterPanel()
+    public void FilterPanel()
     {
-        filterButton.interactable = false;
-        filterPanel.SetActive(true);
+        if (filterPanel.activeInHierarchy)
+        {
+            filterPanel.SetActive(false);
+            filterButton.GetComponent<UnityEngine.UI.Image>().sprite = filterButtonImages[0];
+        }
+        else
+        {
+            filterPanel.SetActive(true);
+            filterButton.GetComponent<UnityEngine.UI.Image>().sprite = filterButtonImages[1];
+        }
     }
 
-    public void CloseFilterPanel() {
-        filterButton.interactable = true;
-        filterPanel.SetActive(false);
+    IEnumerator OpenWithShadow(GameObject panel)
+    {
+        mainMenuPanel.GetComponent<Animator>().SetTrigger("OpenMenu");
+        yield return new WaitForSeconds(0.3f);
+        panel.SetActive(true);
     }
 
     void UserInput()
