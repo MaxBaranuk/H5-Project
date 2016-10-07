@@ -58,7 +58,7 @@ public class MapObjectsManager : MonoBehaviour {
 
     // Update is called once per frame
     void Update () {
- //       userPoint.SetPosition(Input.location.lastData.longitude, Input.location.lastData.latitude);
+        userPoint.SetPosition(Input.location.lastData.longitude, Input.location.lastData.latitude);
     }
 
     List<int> LoadAllObjectIDs() {

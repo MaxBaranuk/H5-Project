@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Runtime.InteropServices;
 using UnityEngine.UI;
 using System.Text.RegularExpressions;
 
@@ -29,7 +30,6 @@ public class MainPanelUIManager : MonoBehaviour {
     public GameObject aboutPanel;
     public Text versionTextView;
     private Animator animator;
-    
 
 #if UNITY_IOS
     [DllImport("__Internal")]
@@ -55,6 +55,7 @@ public class MainPanelUIManager : MonoBehaviour {
 
     public void CloseExitPopup() {
         exitPopupPanel.SetActive(false);
+        if(!menuPanel.activeInHierarchy) gameObject.SetActive(false);
         exitMenuButton.interactable = true;
         agentButton.interactable = true;
     }
@@ -73,9 +74,8 @@ public class MainPanelUIManager : MonoBehaviour {
 
     public void CloseAgentPanel()
     {
-        animator.SetTrigger("CloseMenu");
-        agentPanel.SetActive(false);
-//        gameObject.SetActive(false);
+        StartCoroutine(CloseWithShadow(agentPanel));
+        
     }
     public void OpenInfoPanel() {
 //        animator.SetTrigger("CloseMenu");
@@ -146,9 +146,7 @@ public class MainPanelUIManager : MonoBehaviour {
     }
 
     public void CloseMenu() {
-        animator.SetTrigger("CloseMenu");
-        menuPanel.SetActive(false);
-//        mainMenuPanel.SetActive(false);
+        StartCoroutine(CloseWithShadow(menuPanel));
     }
 
     public void ContactMeOpen() {
@@ -252,11 +250,12 @@ public class MainPanelUIManager : MonoBehaviour {
             return false;
     }
 
-    //IEnumerator OpenWithShadow(GameObject panel)
-    //{
-    //    animator.SetTrigger("OpenMenu");
-    //    yield return new WaitForSeconds(0.1f);
-    //    panel.SetActive(true);
-    //}
+    IEnumerator CloseWithShadow(GameObject panel)
+    {
+        animator.SetTrigger("CloseMenu");
+        panel.SetActive(false);
+        yield return new WaitForSeconds(0.2f);        
+        gameObject.SetActive(false);
+    }
 
 }

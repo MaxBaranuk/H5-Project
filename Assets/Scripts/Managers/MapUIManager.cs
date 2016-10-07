@@ -78,7 +78,7 @@ public class MapUIManager : MonoBehaviour {
     }
 
     void Start () {
- //       InvokeRepeating("UpdateConnection", 0, 1);
+//        InvokeRepeating("UpdateConnection", 0, 1);
     }
     
 	// Update is called once per frame
@@ -99,6 +99,7 @@ public class MapUIManager : MonoBehaviour {
 
     public void OpenMainMenu()
     {
+        mainMenuPanel.SetActive(true);
         filterPanel.SetActive(false);
         StartCoroutine(OpenWithShadow(menuPanel));
     }
@@ -124,7 +125,7 @@ public class MapUIManager : MonoBehaviour {
     IEnumerator OpenWithShadow(GameObject panel)
     {
         mainMenuPanel.GetComponent<Animator>().SetTrigger("OpenMenu");
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
         panel.SetActive(true);
     }
 

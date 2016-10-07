@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine.SceneManagement;
 using System.IO;
+using System.Runtime.InteropServices;
 using UnityEngine.UI;
 
 public class ArSceneManager : MonoBehaviour
@@ -40,13 +41,14 @@ public class ArSceneManager : MonoBehaviour
 
     public void OpenMenuPanel()
     {
+        menu.SetActive(true);
         StartCoroutine(OpenWithShadow(menuPanel));
     }
 
     IEnumerator OpenWithShadow(GameObject panel)
     {
         menu.GetComponent<Animator>().SetTrigger("OpenMenu");
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.2f);
         panel.SetActive(true);
     }
 
@@ -99,7 +101,7 @@ public class ArSceneManager : MonoBehaviour
         _isProcessing = false;
     }
 
-#if UNITY_IOS
+    #if UNITY_IOS
     public struct ConfigStruct
     {
         public string title;
