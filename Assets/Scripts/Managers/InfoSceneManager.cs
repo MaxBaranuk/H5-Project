@@ -146,7 +146,7 @@ public class InfoSceneManager : MonoBehaviour {
         customClass.CallStatic("StartCheckerService", unityActivity);
 #elif UNITY_IOS
         //    applicationDidEnterBackground();
-        _makeToast();
+//        _makeToast();
 #endif
 
 }

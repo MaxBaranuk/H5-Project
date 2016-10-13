@@ -30,6 +30,7 @@ public class OnlineMapsFindDirectionResult
     /// Array with details about the geocoding of origin, destination and waypoints.
     /// </summary>
     public GeocodedWaypoint[] geocoded_waypoints;
+    private string resp;
 
     public OnlineMapsFindDirectionResult(OnlineMapsXML xml)
     {
@@ -48,7 +49,6 @@ public class OnlineMapsFindDirectionResult
         this.routes = routes.ToArray();
         this.geocoded_waypoints = geocodedWaypoints.ToArray();
     }
-
     /// <summary>
     /// Total fare on route. 
     /// </summary>

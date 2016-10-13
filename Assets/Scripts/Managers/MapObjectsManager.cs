@@ -31,6 +31,14 @@ public class MapObjectsManager : MonoBehaviour {
         AddUserPoint();
     }
 
+    public GameObject AddPointToMap(GameObject prefab, float lat, float lon)
+    {
+        OnlineMapsMarker3D inst = mapControl.AddMarker3D(new Vector2(lon, lat), prefab);
+        inst.Init(mapControl.transform);
+//        inst.instance.SetActive(false);
+        return inst.instance;
+    }
+
     private void AddPlaces(Dictionary<int, ObjectItem> items)
     {
         foreach (ObjectItem it in items.Values)

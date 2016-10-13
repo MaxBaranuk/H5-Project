@@ -1245,119 +1245,119 @@ public class OnlineMaps : MonoBehaviour
         };
     }
 
-    private void OnGUI()
-    {
-        if (string.IsNullOrEmpty(tooltip) && showMarkerTooltip != OnlineMapsShowMarkerTooltip.always) return;
+    //private void OnGUI()
+    //{
+    //    if (string.IsNullOrEmpty(tooltip) && showMarkerTooltip != OnlineMapsShowMarkerTooltip.always) return;
 
-        GUIStyle style = new GUIStyle(tooltipStyle);
+    //    GUIStyle style = new GUIStyle(tooltipStyle);
 			
-        if (OnPrepareTooltipStyle != null) OnPrepareTooltipStyle(ref style);
+    //    if (OnPrepareTooltipStyle != null) OnPrepareTooltipStyle(ref style);
 
-        if (!string.IsNullOrEmpty(tooltip))
-        {
-            Vector2 inputPosition = control.GetInputPosition();
+    //    if (!string.IsNullOrEmpty(tooltip))
+    //    {
+    //        Vector2 inputPosition = control.GetInputPosition();
 
-            if (tooltipMarker != null)
-            {
-                if (tooltipMarker.OnDrawTooltip != null) tooltipMarker.OnDrawTooltip(tooltipMarker);
-                else if (OnlineMapsMarkerBase.OnMarkerDrawTooltip != null) OnlineMapsMarkerBase.OnMarkerDrawTooltip(tooltipMarker);
-                else OnGUITooltip(style, tooltip, inputPosition);
-            }
-            else if (tooltipDrawingElement != null)
-            {
-                if (tooltipDrawingElement.OnDrawTooltip != null) tooltipDrawingElement.OnDrawTooltip(tooltipDrawingElement);
-                else if (OnlineMapsDrawingElement.OnElementDrawTooltip != null) OnlineMapsDrawingElement.OnElementDrawTooltip(tooltipDrawingElement);
-                else OnGUITooltip(style, tooltip, inputPosition);
-            }
-        }
+    //        if (tooltipMarker != null)
+    //        {
+    //            if (tooltipMarker.OnDrawTooltip != null) tooltipMarker.OnDrawTooltip(tooltipMarker);
+    //            else if (OnlineMapsMarkerBase.OnMarkerDrawTooltip != null) OnlineMapsMarkerBase.OnMarkerDrawTooltip(tooltipMarker);
+    //            else OnGUITooltip(style, tooltip, inputPosition);
+    //        }
+    //        else if (tooltipDrawingElement != null)
+    //        {
+    //            if (tooltipDrawingElement.OnDrawTooltip != null) tooltipDrawingElement.OnDrawTooltip(tooltipDrawingElement);
+    //            else if (OnlineMapsDrawingElement.OnElementDrawTooltip != null) OnlineMapsDrawingElement.OnElementDrawTooltip(tooltipDrawingElement);
+    //            else OnGUITooltip(style, tooltip, inputPosition);
+    //        }
+    //    }
 
-        if (showMarkerTooltip == OnlineMapsShowMarkerTooltip.always)
-        {
-            if (OnlineMapsControlBase.instance is OnlineMapsTileSetControl)
-            {
-                double tlx = topLeftLongitude;
-                double tly = topLeftLatitude;
-                double brx = bottomRightLongitude;
-                double bry = bottomRightLatitude;
-                if (brx < tlx) brx += 360;
+    //    if (showMarkerTooltip == OnlineMapsShowMarkerTooltip.always)
+    //    {
+    //        if (OnlineMapsControlBase.instance is OnlineMapsTileSetControl)
+    //        {
+    //            double tlx = topLeftLongitude;
+    //            double tly = topLeftLatitude;
+    //            double brx = bottomRightLongitude;
+    //            double bry = bottomRightLatitude;
+    //            if (brx < tlx) brx += 360;
 
-                foreach (OnlineMapsMarker marker in markers)
-                {
-                    if (string.IsNullOrEmpty(marker.label)) continue;
+    //            foreach (OnlineMapsMarker marker in markers)
+    //            {
+    //                if (string.IsNullOrEmpty(marker.label)) continue;
 
-                    double mx, my;
-                    marker.GetPosition(out mx, out my);
+    //                double mx, my;
+    //                marker.GetPosition(out mx, out my);
 
-                    if (!(((mx > tlx && mx < brx) || (mx + 360 > tlx && mx + 360 < brx) || (mx - 360 > tlx && mx - 360 < brx)) && my < tly && my > bry)) continue;
+    //                if (!(((mx > tlx && mx < brx) || (mx + 360 > tlx && mx + 360 < brx) || (mx - 360 > tlx && mx - 360 < brx)) && my < tly && my > bry)) continue;
 
-                    if (marker.OnDrawTooltip != null) marker.OnDrawTooltip(marker);
-                    else if (OnlineMapsMarkerBase.OnMarkerDrawTooltip != null) OnlineMapsMarkerBase.OnMarkerDrawTooltip(marker);
-                    else
-                    {
-                        Vector3 p1 = OnlineMapsTileSetControl.instance.GetWorldPositionWithElevation(mx, my, tlx, tly, brx, bry);
-                        Vector3 p2 = p1 + new Vector3(0, 0, tilesetSize.y / tilesetHeight * marker.height * marker.scale);
+    //                if (marker.OnDrawTooltip != null) marker.OnDrawTooltip(marker);
+    //                else if (OnlineMapsMarkerBase.OnMarkerDrawTooltip != null) OnlineMapsMarkerBase.OnMarkerDrawTooltip(marker);
+    //                else
+    //                {
+    //                    Vector3 p1 = OnlineMapsTileSetControl.instance.GetWorldPositionWithElevation(mx, my, tlx, tly, brx, bry);
+    //                    Vector3 p2 = p1 + new Vector3(0, 0, tilesetSize.y / tilesetHeight * marker.height * marker.scale);
 
-                        Vector2 screenPoint1 = OnlineMapsTileSetControl.instance.activeCamera.WorldToScreenPoint(p1);
-                        Vector2 screenPoint2 = OnlineMapsTileSetControl.instance.activeCamera.WorldToScreenPoint(p2);
+    //                    Vector2 screenPoint1 = OnlineMapsTileSetControl.instance.activeCamera.WorldToScreenPoint(p1);
+    //                    Vector2 screenPoint2 = OnlineMapsTileSetControl.instance.activeCamera.WorldToScreenPoint(p2);
 
-                        float yOffset = (screenPoint1.y - screenPoint2.y) * transform.localScale.x - 10;
+    //                    float yOffset = (screenPoint1.y - screenPoint2.y) * transform.localScale.x - 10;
 
-                        OnGUITooltip(style, marker.label, screenPoint1 + new Vector2(0, yOffset));
-                    }
-                }
+    //                    OnGUITooltip(style, marker.label, screenPoint1 + new Vector2(0, yOffset));
+    //                }
+    //            }
 
-                foreach (OnlineMapsMarker3D marker in OnlineMapsTileSetControl.instance.markers3D)
-                {
-                    if (string.IsNullOrEmpty(marker.label)) continue;
+    //            foreach (OnlineMapsMarker3D marker in OnlineMapsTileSetControl.instance.markers3D)
+    //            {
+    //                if (string.IsNullOrEmpty(marker.label)) continue;
 
-                    double mx, my;
-                    marker.GetPosition(out mx, out my);
+    //                double mx, my;
+    //                marker.GetPosition(out mx, out my);
 
-                    if (!(((mx > tlx && mx < brx) || (mx + 360 > tlx && mx + 360 < brx) ||
-                       (mx - 360 > tlx && mx - 360 < brx)) &&
-                      my < tly && my > bry)) continue;
+    //                if (!(((mx > tlx && mx < brx) || (mx + 360 > tlx && mx + 360 < brx) ||
+    //                   (mx - 360 > tlx && mx - 360 < brx)) &&
+    //                  my < tly && my > bry)) continue;
 
-                    if (marker.OnDrawTooltip != null) marker.OnDrawTooltip(marker);
-                    else if (OnlineMapsMarkerBase.OnMarkerDrawTooltip != null) OnlineMapsMarkerBase.OnMarkerDrawTooltip(marker);
-                    else
-                    {
-                        Vector3 p1 = OnlineMapsTileSetControl.instance.GetWorldPositionWithElevation(mx, my, tlx, tly, brx, bry);
-                        Vector3 p2 = p1 + new Vector3(0, 0, tilesetSize.y / tilesetHeight * marker.scale);
+    //                if (marker.OnDrawTooltip != null) marker.OnDrawTooltip(marker);
+    //                else if (OnlineMapsMarkerBase.OnMarkerDrawTooltip != null) OnlineMapsMarkerBase.OnMarkerDrawTooltip(marker);
+    //                else
+    //                {
+    //                    Vector3 p1 = OnlineMapsTileSetControl.instance.GetWorldPositionWithElevation(mx, my, tlx, tly, brx, bry);
+    //                    Vector3 p2 = p1 + new Vector3(0, 0, tilesetSize.y / tilesetHeight * marker.scale);
 
-                        Vector2 screenPoint1 = OnlineMapsTileSetControl.instance.activeCamera.WorldToScreenPoint(p1);
-                        Vector2 screenPoint2 = OnlineMapsTileSetControl.instance.activeCamera.WorldToScreenPoint(p2);
+    //                    Vector2 screenPoint1 = OnlineMapsTileSetControl.instance.activeCamera.WorldToScreenPoint(p1);
+    //                    Vector2 screenPoint2 = OnlineMapsTileSetControl.instance.activeCamera.WorldToScreenPoint(p2);
 
-                        float yOffset = (screenPoint1.y - screenPoint2.y) * transform.localScale.x - 10;
+    //                    float yOffset = (screenPoint1.y - screenPoint2.y) * transform.localScale.x - 10;
 
-                        OnGUITooltip(style, marker.label, screenPoint1 + new Vector2(0, yOffset));
-                    }
-                }
-            }
-            else
-            {
-                foreach (OnlineMapsMarker marker in markers)
-                {
-                    if (string.IsNullOrEmpty(marker.label)) continue;
+    //                    OnGUITooltip(style, marker.label, screenPoint1 + new Vector2(0, yOffset));
+    //                }
+    //            }
+    //        }
+    //        else
+    //        {
+    //            foreach (OnlineMapsMarker marker in markers)
+    //            {
+    //                if (string.IsNullOrEmpty(marker.label)) continue;
 
-                    Rect rect = marker.screenRect;
+    //                Rect rect = marker.screenRect;
 
-                    if (rect.xMax > 0 && rect.xMin < Screen.width && rect.yMax > 0 && rect.yMin < Screen.height)
-                    {
-                        if (marker.OnDrawTooltip != null) marker.OnDrawTooltip(marker);
-                        else if (OnlineMapsMarkerBase.OnMarkerDrawTooltip != null) OnlineMapsMarkerBase.OnMarkerDrawTooltip(marker);
-                        else OnGUITooltip(style, marker.label, new Vector2(rect.x + rect.width / 2, rect.y + rect.height));
-                    }
-                }
-            }
-        }
-    }
+    //                if (rect.xMax > 0 && rect.xMin < Screen.width && rect.yMax > 0 && rect.yMin < Screen.height)
+    //                {
+    //                    if (marker.OnDrawTooltip != null) marker.OnDrawTooltip(marker);
+    //                    else if (OnlineMapsMarkerBase.OnMarkerDrawTooltip != null) OnlineMapsMarkerBase.OnMarkerDrawTooltip(marker);
+    //                    else OnGUITooltip(style, marker.label, new Vector2(rect.x + rect.width / 2, rect.y + rect.height));
+    //                }
+    //            }
+    //        }
+    //    }
+    //}
 
-    private void OnGUITooltip(GUIStyle style, string text, Vector2 position)
-    {
-        GUIContent tip = new GUIContent(text);
-        Vector2 size = style.CalcSize(tip);
-        GUI.Label(new Rect(position.x - size.x / 2, Screen.height - position.y - size.y - 20, size.x + 10, size.y + 5), text, style);
-    }
+    //private void OnGUITooltip(GUIStyle style, string text, Vector2 position)
+    //{
+    //    GUIContent tip = new GUIContent(text);
+    //    Vector2 size = style.CalcSize(tip);
+    //    GUI.Label(new Rect(position.x - size.x / 2, Screen.height - position.y - size.y - 20, size.x + 10, size.y + 5), text, style);
+    //}
 
     /// <summary>
     /// Full redraw map.

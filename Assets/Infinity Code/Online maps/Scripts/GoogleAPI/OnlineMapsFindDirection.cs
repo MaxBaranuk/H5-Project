@@ -26,7 +26,8 @@ public class OnlineMapsFindDirection : OnlineMapsGoogleAPIQuery
     {
         _status = OnlineMapsQueryStatus.downloading;
         StringBuilder url = new StringBuilder();
-        url.AppendFormat("https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}&sensor=false", OnlineMapsWWW.EscapeURL(origin), OnlineMapsWWW.EscapeURL(destination));
+ //       url.AppendFormat("https://maps.googleapis.com/maps/api/geocode/xml?latlng=50.4465500,30.4369700");
+        url.AppendFormat("https://maps.googleapis.com/maps/api/directions/xml?origin={0}&destination={1}&key=AIzaSyDlsy75sNjiK7i6sOucbRHuYPuYzwj4KrY", origin, destination);
         if (alternatives) url.Append("&alternatives=true");
         www = OnlineMapsUtils.GetWWW(url);
         OnlineMaps.instance.AddGoogleAPIQuery(this);
@@ -67,8 +68,20 @@ public class OnlineMapsFindDirection : OnlineMapsGoogleAPIQuery
     /// <param name="destination">Coordinates of the route ends.</param>
     /// <param name="alternatives">Search for alternative routes.</param>
     /// <returns>Query instance to the Google API.</returns>
-    public static OnlineMapsGoogleAPIQuery Find(Vector2 origin, Vector2 destination, bool alternatives = false)
-    {
-        return Find(origin.y + "," + origin.x, destination.y + "," + destination.x, alternatives);
-    }
+    //public static OnlineMapsGoogleAPIQuery Find(Vector2 origin, Vector2 destination, bool alternatives = false)
+    //{
+    //    StringBuilder url = new StringBuilder();
+    //    url.AppendFormat("https://maps.googleapis.com/maps/api/geocode/xml?latlng=50.4465500,30.4369700");
+    //   ;
+
+
+    //    string originID = "place_id:ChIJuTtaxCLM1EARjIEPPtrqLOA";
+    //    string destinationId = "Lviv";
+
+
+    //    OnlineMapsGoogleAPIQuery query = Find(originID, destinationId, alternatives);
+    //    return query;
+    //}
+
+
 }
