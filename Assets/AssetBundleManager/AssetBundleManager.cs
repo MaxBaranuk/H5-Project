@@ -221,7 +221,7 @@ namespace AssetBundles
 		static protected void LoadAssetBundle(string assetBundleName, bool isLoadingAssetBundleManifest = false)
 		{
 			Log(LogType.Info, "Loading Asset Bundle " + (isLoadingAssetBundleManifest ? "Manifest: " : ": ") + assetBundleName);
-            ServerManager.instanse.status += "Loading Asset Bundle " + (isLoadingAssetBundleManifest ? "Manifest: " : ": ") + assetBundleName+"\n";
+            ServerManager.Instanse().status += "Loading Asset Bundle " + (isLoadingAssetBundleManifest ? "Manifest: " : ": ") + assetBundleName+"\n";
 #if UNITY_EDITOR
             // If we're in Editor simulation mode, we don't have to really load the assetBundle and its dependencies.
             if (SimulateAssetBundleInEditor)
@@ -233,7 +233,7 @@ namespace AssetBundles
 				if (m_AssetBundleManifest == null)
 				{
 					Debug.LogError("Please initialize AssetBundleManifest by calling AssetBundleManager.Initialize()");
-                  ServerManager.instanse.status += "Please initialize AssetBundleManifest by calling AssetBundleManager.Initialize()\n";
+                  ServerManager.Instanse().status += "Please initialize AssetBundleManifest by calling AssetBundleManager.Initialize()\n";
 
                     return;
 				}
@@ -450,7 +450,7 @@ namespace AssetBundles
 		static public AssetBundleLoadAssetOperation LoadAssetAsync (string assetBundleName, string assetName, System.Type type)
 		{
 			Log(LogType.Info, "Loading " + assetName + " from " + assetBundleName + " bundle");
-            ServerManager.instanse.status += "Loading " + assetName + " from " + assetBundleName + " bundle\n";
+            ServerManager.Instanse().status += "Loading " + assetName + " from " + assetBundleName + " bundle\n";
 
             AssetBundleLoadAssetOperation operation = null;
 	#if UNITY_EDITOR
@@ -460,7 +460,7 @@ namespace AssetBundles
 				if (assetPaths.Length == 0)
 				{
 					Debug.LogError("There is no asset with name \"" + assetName + "\" in " + assetBundleName);
-                    ServerManager.instanse.status += "There is no asset with name \"" + assetName + "\" in " + assetBundleName+"\n";
+                    ServerManager.Instanse().status += "There is no asset with name \"" + assetName + "\" in " + assetBundleName+"\n";
                     return null;
 				}
 	

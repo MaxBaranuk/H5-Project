@@ -18,7 +18,7 @@ public class MainMenuUIManager : MonoBehaviour {
     }
 
     void Update () {
-        connectionInfoPanel.SetActive(!ServerManager.instanse.hasInternetConnection);
+        connectionInfoPanel.SetActive(!ServerManager.Instanse().hasInternetConnection);
         ExitListener();
 	}
 

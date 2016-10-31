@@ -19,7 +19,11 @@ public class ArSceneManager : MonoBehaviour
     // Use this for initialization
     void Update()
     {
-        connectionInfoPanel.SetActive(!ServerManager.instanse.hasInternetConnection);
+        connectionInfoPanel.SetActive(!ServerManager.Instanse().hasInternetConnection);
+    }
+
+    public void GetContent(string id) {
+        ServerManager.Instanse().CheckTargetID(id);
     }
 
     public void ToMap()

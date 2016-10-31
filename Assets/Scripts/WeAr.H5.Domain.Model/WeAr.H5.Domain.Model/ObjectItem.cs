@@ -2,6 +2,7 @@
 
 namespace WeAr.H5.Domain.Model
 {
+    [Serializable]
     public class ObjectItem
     {
         public int Id { get; set; }

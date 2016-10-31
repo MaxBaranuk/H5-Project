@@ -10,6 +10,7 @@ using UnityEngine;
 using Vuforia;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 /// <summary>
 /// A custom handler that implements the ITrackableEventHandler interface.
 /// </summary>
@@ -17,12 +18,13 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
 {
     public GameObject currObject;
     public Text info;
-    public GameObject agentButton;
+//    public GameObject agentButton;
     public GameObject mainMenu;
     private bool currMenuStateIsActive;
     #region PRIVATE_MEMBERS
     private TrackableBehaviour mTrackableBehaviour;
     private ObjectTracker objectTracker;
+    private Action targetFind;
     #endregion // PRIVATE_MEMBERS
 
 
@@ -80,22 +82,22 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
 
     #region PRIVATE_METHODS
 
-
     private void OnTrackingFound()
     {
-        string id = mTrackableBehaviour.Trackable.Name;
+        string id = ""+mTrackableBehaviour.Trackable.Name;
 
         info.text = id;
 
-        if (id == "ananas_group")
-        {
-            StartCoroutine(ServerManager.instanse.getObjectByTargetID(id));
-            agentButton.SetActive(true);
-            ServerManager.instanse.status += "";
-        }
-        if (id == "customTarget") {
-            SceneManager.LoadScene("WebView");
-        }
+        ServerManager.Instanse().CheckTargetID(id);
+        //        if (id == "ananas_group")
+        //        {
+        //            StartCoroutine(ServerManager.instanse.getObjectByTargetID(id));
+        ////            agentButton.SetActive(true);
+        //            ServerManager.instanse.status += "";
+        //        }
+        //        if (id == "customTarget") {
+        //            SceneManager.LoadScene("WebView");
+        //        }
 
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
         Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
@@ -132,10 +134,11 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
         }
 
         //        g.SetActive(false);
-        info.text = "clear";
-        ServerManager.instanse.status = "";
+//        info.text = "clear";
+        ServerManager.Instanse().status = "";
         Destroy(currObject);
-        agentButton.SetActive(false);
+        transform.FindChild("Image").gameObject.SetActive(false);
+//        agentButton.SetActive(false);
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
         Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 
@@ -156,5 +159,7 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
 
         Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
     }
+
+
     #endregion //PRIVATE_METHODS
 }

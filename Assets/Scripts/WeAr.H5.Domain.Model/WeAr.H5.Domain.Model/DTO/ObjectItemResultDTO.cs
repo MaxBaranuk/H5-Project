@@ -5,6 +5,7 @@ using System.Text;
 // ReSharper disable once InconsistentNaming
 namespace WeAr.H5.Domain.Model.DTO
 {
+    [Serializable]
     public class ObjectItemResultDTO
     {
         public int Id { get; set; }

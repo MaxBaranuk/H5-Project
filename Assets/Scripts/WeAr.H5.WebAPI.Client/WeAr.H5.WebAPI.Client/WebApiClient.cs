@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System.Collections.Generic;
+using System.Collections.Specialized;
+using System.IO;
 using System.Net;
 using System.Text;
 using Newtonsoft.Json;
@@ -7,7 +9,8 @@ namespace WeAr.H5.WebAPI.Client
 {
     public class WebApiClient
     {
-        private static ApiResponse SendWithData<T>(EMethod method, string url, T queryData)
+
+        private static ApiResponse SendWithData<T>(EMethod method, string url, T queryData, NameValueCollection headers = null)
         {
             var encoding = new UTF8Encoding();
             var jsonData = JsonConvert.SerializeObject(queryData);
@@ -19,27 +22,44 @@ namespace WeAr.H5.WebAPI.Client
             httpWebRequest.ContentType = "application/json";
             httpWebRequest.ContentLength = data.Length;
 
+            if (headers != null)
+            {
+                httpWebRequest.Headers.Add(headers);
+            }
+
             using (var stream = httpWebRequest.GetRequestStream())
             {
                 stream.Write(data, 0, data.Length);
             }
 
-            var response = (HttpWebResponse)httpWebRequest.GetResponse();
-            var location = response.GetResponseHeader("location");
-            var strResult = new StreamReader(response.GetResponseStream()).ReadToEnd();
-
-            return new ApiResponse(response.StatusCode, strResult, location);
+            string strResult = null;
+            string location = null;
+            HttpStatusCode statusCode;
+            using (var response = (HttpWebResponse) httpWebRequest.GetResponse())
+            {
+                statusCode = response.StatusCode;
+                location = response.GetResponseHeader("location");
+                strResult = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            }
+                
+            return new ApiResponse(statusCode, strResult, location);
         }
 
         private static ApiResponse Send(EMethod method, string url)
         {
             var httpWebRequest = (HttpWebRequest)WebRequest.Create(url);
             httpWebRequest.Method = method.ToString();
-            var response = (HttpWebResponse)httpWebRequest.GetResponse();
-            var location = response.GetResponseHeader("location");
-            var strResult = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            string strResult = null;
+            string location = null;
+            HttpStatusCode statusCode;
+            using (var response = (HttpWebResponse)httpWebRequest.GetResponse())
+            {
+                statusCode = response.StatusCode;
+                location = response.GetResponseHeader("location");
+                strResult = new StreamReader(response.GetResponseStream()).ReadToEnd();
+            }
 
-            return new ApiResponse(response.StatusCode, strResult, location);
+            return new ApiResponse(statusCode, strResult, location);
         }
 
         //public static void Send<TSend>(EMethod method, string url, TSend queryData = null) where TSend : class
@@ -51,7 +71,8 @@ namespace WeAr.H5.WebAPI.Client
 
         public static TReturn SendAndDeserialize<TSend, TReturn>(EMethod method, string url, TSend queryData)
         {
-            var response = SendWithResponse(method, url, queryData);
+            var response =
+                SendWithResponse(method, url, queryData);
 
             return response.StatusCode != HttpStatusCode.BadRequest
                 ? JsonConvert.DeserializeObject<TReturn>(response.Result)
@@ -79,6 +100,20 @@ namespace WeAr.H5.WebAPI.Client
             var response = Send(method, url);
 
             return response;
+        }
+
+        private static string GetUrlQuery(object obj)
+        {
+            var properties = obj.GetType().GetProperties();
+
+            var builder = new StringBuilder("?");
+
+            for (int i = 0; i < properties.Length; i++)
+            {
+                builder.Append(properties);
+            }
+
+            return null;
         }
     }
 }

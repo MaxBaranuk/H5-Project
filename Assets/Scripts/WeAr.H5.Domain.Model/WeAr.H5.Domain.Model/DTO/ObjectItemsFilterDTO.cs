@@ -19,6 +19,11 @@ namespace WeAr.H5.Domain.Model.DTO
 
         public short[] Types { get; set; }
 
+        public bool IdOnly { get; set; }
+
+        public int? Offset { get; set; }
+
+        public int? Limit { get; set; }
     }
 
     public class LocationFilter

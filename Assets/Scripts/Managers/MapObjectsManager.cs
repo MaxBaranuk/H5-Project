@@ -7,17 +7,22 @@ using WeAr.H5.Domain.Model;
 using WeAr.H5.WebAPI.Client;
 using UnityEngine.UI;
 
-public class MapObjectsManager : MonoBehaviour {
+namespace UnityEngine.UI
+{
+    public class MapObjectsManager : MonoBehaviour {
 
-    OnlineMapsTileSetControl mapControl;
     public GameObject[] itemPrefabs;
-    public GameObject userPointPrefab;
-    private OnlineMapsMarker3D userPoint;
-    public GameObject objectItemInfoPanel;
-    public UnityEngine.UI.Text infoTitle;
 
+    OnlineMapsTileSetControl mapControl; 
+    OnlineMapsMarker3D userPoint;
+    GameObject objectItemInfoPanel;
+    Text infoTitle;
+    Text infoDescription;
+    Image itemImage;
+    public ObjectItem[] items;
+    public List<OnlineMapsMarker3D> itemsOnScene;
 
-    void OnEnable()
+        void OnEnable()
     {
         Input.location.Start();
     }
@@ -25,85 +30,93 @@ public class MapObjectsManager : MonoBehaviour {
     // Use this for initialization
     void Start () {
         mapControl = GameObject.Find("Map").GetComponent<OnlineMapsTileSetControl>();
-        Settings.LoadMapObjects();
-        DownloadNewItems(LoadAllObjectIDs());
-        AddPlaces(MapObjectsCache.items);      
+
+        objectItemInfoPanel =
+            GameObject.Find("Canvas")
+                .transform.FindChild("ObjectPanel").gameObject;
+        infoTitle =
+            objectItemInfoPanel.transform
+                .FindChild("TitlePanel")
+                .FindChild("Title")
+                .GetComponent<Text>();
+
+        infoDescription =
+             objectItemInfoPanel.transform
+                .FindChild("AboutPanel")
+                .FindChild("ViewPort")
+                .FindChild("Panel")
+                .FindChild("Text")
+                .GetComponent<Text>();
+
+        itemImage =
+              objectItemInfoPanel.transform
+                .FindChild("GalleryPanel")
+                .FindChild("GalleryPanel")
+                .FindChild("Image")
+                .GetComponent<Image>();
+        items = DownloadItems();
+        AddItemsToMap(items); 
         AddUserPoint();
     }
 
-    public GameObject AddPointToMap(GameObject prefab, float lat, float lon)
-    {
-        OnlineMapsMarker3D inst = mapControl.AddMarker3D(new Vector2(lon, lat), prefab);
-        inst.Init(mapControl.transform);
-//        inst.instance.SetActive(false);
-        return inst.instance;
-    }
-
-    private void AddPlaces(Dictionary<int, ObjectItem> items)
-    {
-        foreach (ObjectItem it in items.Values)
-        {
-                OnlineMapsMarker3D inst = mapControl.AddMarker3D(new Vector2(it.Longitude, it.Latitude), itemPrefabs[0]);
-                inst.customData = it;
-                inst.label = it.Name;
-
-            Action<OnlineMapsMarkerBase> action = delegate (OnlineMapsMarkerBase marker)
-            {
-                 ObjectItem item =(ObjectItem) marker.customData;
-                 infoTitle.text = item.Name;
-                 objectItemInfoPanel.SetActive(true);
-            };
-                inst.OnClick = action;
-                inst.Init(mapControl.transform);     
-        }
-    }
+    //public GameObject AddPointToMap(GameObject prefab, float lat, float lon)
+    //{
+    //    OnlineMapsMarker3D inst = mapControl.AddMarker3D(new Vector2(lon, lat), prefab);
+    //    inst.Init(mapControl.transform);
+    //    return inst.instance;
+    //}
 
     void AddUserPoint()
     {
-        userPoint = mapControl.AddMarker3D(new Vector2(Input.location.lastData.longitude, Input.location.lastData.latitude), userPointPrefab);
+        userPoint = mapControl.AddMarker3D(new Vector2(Input.location.lastData.longitude, Input.location.lastData.latitude), itemPrefabs[1]);
         userPoint.Init(mapControl.transform);
     }
 
-    // Update is called once per frame
     void Update () {
         userPoint.SetPosition(Input.location.lastData.longitude, Input.location.lastData.latitude);
     }
 
-    List<int> LoadAllObjectIDs() {
-        List<int> ids = new List<int>();
-        for (int i = 1; i < 25; i++) {
-            ids.Add(i);
-        }
-        return ids;
-    }
-
-    void DownloadNewItems(List<int> items) {
-        foreach (int i in items) {
-            if (!MapObjectsCache.items.ContainsKey(i)) DownloadNewItem(i);
-        }
-
-        foreach (int i in MapObjectsCache.items.Keys) {
-            if (!items.Contains(i)) MapObjectsCache.items.Remove(i);
-        }
-    }
-
-    void DownloadNewItem(int id)
+    ObjectItem [] DownloadItems()
     {
-        try
+        ObjectItem[] items = WebApiClient.SendAndDeserialize<ObjectItem[]>(EMethod.GET,
+                "http://wear-h5.azurewebsites.net/api/object-items");
+        return items;
+    }
+
+    void AddItemsToMap(ObjectItem[] items)
+    {
+        foreach (ObjectItem it in items)
         {
-            ObjectItem i = WebApiClient.SendAndDeserialize<ObjectItem>(EMethod.GET,
-                "https://wear-h5.azurewebsites.net/api/object-items/" + id);
-            MapObjectsCache.items.Add(id, i);
+            OnlineMapsMarker3D inst = mapControl.AddMarker3D(new Vector2(it.Longitude, it.Latitude), itemPrefabs[0]);
+            inst.customData = it;
+            inst.label = it.Name;
+
+            Action<OnlineMapsMarkerBase> action = delegate (OnlineMapsMarkerBase marker)
+            {
+                ObjectItem item = (ObjectItem)marker.customData;
+                infoTitle.text = item.Name;
+                infoDescription.text = item.Description;
+                objectItemInfoPanel.SetActive(true);
+
+
+                ObjectItem itemDetail =  WebApiClient.SendAndDeserialize<ObjectItem>(EMethod.GET,
+               "http://wear-h5.azurewebsites.net/api/object-items/photo/"+item.Id);
+                Texture2D text = new Texture2D(1, 1, TextureFormat.ARGB32, false);
+                text.LoadImage(itemDetail.Photo);
+
+                Sprite sprite = Sprite.Create(text, new Rect(0, 0, text.width, text.height), new Vector2(.5f, .5f));
+                itemImage.sprite = sprite;
+
+            };
+            inst.OnClick = action;
+            inst.Init(mapControl.transform);
+            itemsOnScene.Add(inst);
         }
-        catch (Exception)
-        {
-            Debug.Log("Fail to load item " + id);
-        }
-        ;
     }
 
     void OnDisable() {
-        Settings.SaveMapObjects();
         Input.location.Stop();
     }
+
+}
 }

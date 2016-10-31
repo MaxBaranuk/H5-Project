@@ -31,6 +31,9 @@ public class MainPanelUIManager : MonoBehaviour {
     public Text versionTextView;
     private Animator animator;
 
+    public Toggle serviceToggle;
+
+
 #if UNITY_IOS
     [DllImport("__Internal")]
     private static extern void sendWhatsappMessage();
@@ -38,8 +41,17 @@ public class MainPanelUIManager : MonoBehaviour {
     // Use this for initialization
     void Start ()
     {
+        if (PlayerPrefs.HasKey("ServiceRun"))
+            serviceToggle.isOn = PlayerPrefs.GetString("ServiceRun") == "yes" ? true : false;
+        else serviceToggle.isOn = false;
+
+        serviceToggle.onValueChanged.AddListener((value) => {
+            ServerManager.Instanse().OperateService(value);
+        });
+
         versionTextView.text = "Version: "+Application.version;
         animator = GetComponent<Animator>();
+       
     }
 	
 	// Update is called once per frame
@@ -258,4 +270,8 @@ public class MainPanelUIManager : MonoBehaviour {
         gameObject.SetActive(false);
     }
 
+    void OnDisable()
+    {
+        PlayerPrefs.SetString("ServiceRun", serviceToggle.isOn?"yes":"no");
+    }
 }

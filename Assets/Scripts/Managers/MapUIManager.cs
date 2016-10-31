@@ -24,7 +24,7 @@ public class MapUIManager : MonoBehaviour {
     public Toggle hangarToggle;
     HashSet<EObjectItemType> activeToggles;
     [HideInInspector]
-    public Dictionary<ObjectItem, GameObject> itemsOnScene;
+//    public Dictionary<ObjectItem, OnlineMapsMarker3D> itemsOnScene;
     public GameObject connectionInfoPanel;
     public GameObject GPSInfoPanel;
     public Sprite[] filterButtonImages;
@@ -52,7 +52,7 @@ public class MapUIManager : MonoBehaviour {
 
     void Awake() {
         activeToggles = new HashSet<EObjectItemType>();
-        itemsOnScene = new Dictionary<ObjectItem, GameObject>();
+//        itemsOnScene = new Dictionary<ObjectItem, OnlineMapsMarker3D>();
         activeToggles.Add(EObjectItemType.House);
         activeToggles.Add(EObjectItemType.Flat);
         activeToggles.Add(EObjectItemType.Area);
@@ -60,18 +60,21 @@ public class MapUIManager : MonoBehaviour {
         houseToggle.onValueChanged.AddListener((value) => {
             if (value) activeToggles.Add(EObjectItemType.House);
             else activeToggles.Remove(EObjectItemType.House);
-//            UpdateItemsAfterTypeChange();
+            Debug.Log("Value change");
+            UpdateItemsAfterTypeChange();
         });
         appartToggle.onValueChanged.AddListener((value) =>{
             if (value) activeToggles.Add(EObjectItemType.Flat);
             else activeToggles.Remove(EObjectItemType.Flat);
-//            UpdateItemsAfterTypeChange();
+            Debug.Log("Value change");
+            UpdateItemsAfterTypeChange();
          });
         
         officeToggle.onValueChanged.AddListener((value) => {
             if (value) activeToggles.Add(EObjectItemType.Area);
             else activeToggles.Remove(EObjectItemType.Area);
- //           UpdateItemsAfterTypeChange();
+            Debug.Log("Value change");
+            UpdateItemsAfterTypeChange();
         });
         //stockToggle.onValueChanged.AddListener((value) => {
         //    if (value) activeToggles.Add("Stock");
@@ -97,7 +100,7 @@ public class MapUIManager : MonoBehaviour {
         //lineRenderer.material = (Material)Resources.Load("LineMaterial");
         //lineRenderer.SetWidth(30F, 30F);
 
-        //        InvokeRepeating("UpdateConnection", 0, 1);
+        InvokeRepeating("UpdateConnection", 0, 1);
     }
     
 	// Update is called once per frame
@@ -123,7 +126,7 @@ public class MapUIManager : MonoBehaviour {
 
     void UpdateConnection()
     {
-        connectionInfoPanel.SetActive(!ServerManager.instanse.hasInternetConnection);
+        connectionInfoPanel.SetActive(!ServerManager.Instanse().hasInternetConnection);
         bool disable = Input.location.lastData.longitude==0&&Input.location.lastData.latitude==0;
         GPSInfoPanel.SetActive(disable);
     }
@@ -255,7 +258,7 @@ public class MapUIManager : MonoBehaviour {
     }
 
     //public void CreatePoint(ObjectItem it) {
-        
+
     //    GameObject currItem = Instantiate(point);
     //    itemsOnScene.Add(it, currItem);
     //    SetGeolocation go = currItem.GetComponent<SetGeolocation>();
@@ -271,21 +274,32 @@ public class MapUIManager : MonoBehaviour {
     //    Destroy(currItem);
     //}
 
-    public void ChangeNotificationStatus() {
-        notificationsOn = !notificationsOn;
-        Application.runInBackground = notificationsOn;
-    }
-
-    
-
-    //void UpdateItemsAfterTypeChange() {
-
-    //    Dictionary<ObjectItem, GameObject>.KeyCollection keyColl = itemsOnScene.Keys;
-    //    IEnumerator<ObjectItem> ie = keyColl.GetEnumerator();
-    //    while (ie.MoveNext()) {
-
-    //        if (activeToggles.Contains(ie.Current.Type)) itemsOnScene[ie.Current].SetActive(true);
-    //        else itemsOnScene[ie.Current].SetActive(false);
-    //    }
+    //public void ChangeNotificationStatus() {
+    //    notificationsOn = !notificationsOn;
+    //    Application.runInBackground = notificationsOn;
     //}
+
+
+
+    void UpdateItemsAfterTypeChange()
+    {
+        foreach (OnlineMapsMarker3D i in mapObjectsManager.itemsOnScene)
+        {
+            ObjectItem oi = (ObjectItem) i.customData;
+            EObjectItemType t = (EObjectItemType) oi.Type;
+            if (activeToggles.Contains(t)) i.enabled = true;
+            else i.enabled = false;
+
+        }
+
+
+        //Dictionary<ObjectItem, OnlineMapsMarker3D>.KeyCollection keyColl = itemsOnScene.Keys;
+        //IEnumerator<ObjectItem> ie = keyColl.GetEnumerator();
+        //while (ie.MoveNext())
+        //{
+        //    EObjectItemType t = (EObjectItemType) ie.Current.Type;
+        //    if (activeToggles.Contains(t)) itemsOnScene[ie.Current].enabled = true;
+        //    else itemsOnScene[ie.Current].enabled = false;
+        //}
+    }
 }
