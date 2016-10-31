@@ -19,15 +19,17 @@ public class InfoSceneManager : MonoBehaviour {
     AndroidJavaClass customClass;
 
 #if UNITY_IOS
-    [DllImport("__Internal")]
+ //   [DllImport("__Internal")]
 //    private static extern void applicationDidEnterBackground();
-    private static extern void _makeToast();
+ //   private static extern void _makeToast();
 #endif
     // Use this for initialization
     void Start() {
+#if UNITY_ANDROID
         unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
         customClass = new AndroidJavaClass("com.wear.locationservice.UnityLocationService");
+#endif
         //       Application.runInBackground = true;
     }
 
@@ -144,7 +146,7 @@ public class InfoSceneManager : MonoBehaviour {
         customClass.CallStatic("StartCheckerService", unityActivity);
 #elif UNITY_IOS
         //    applicationDidEnterBackground();
-        _makeToast();
+//        _makeToast();
 #endif
 
 }

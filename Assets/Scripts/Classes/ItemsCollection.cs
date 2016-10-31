@@ -23,7 +23,7 @@ public class ItemsCollection {
             lib = (ItemsCollection)serializer.Deserialize(textReader);
             reader.Dispose();
         }
-        catch (Exception e) {
+        catch (Exception ) {
             lib = new ItemsCollection();
             lib.items = new Item[0];
         }

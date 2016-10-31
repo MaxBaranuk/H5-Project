@@ -18,7 +18,7 @@ public class MainMenuUIManager : MonoBehaviour {
     }
 
     void Update () {
-        connectionInfoPanel.SetActive(!ServerManager.instanse.hasInternetConnection);
+        connectionInfoPanel.SetActive(!ServerManager.Instanse().hasInternetConnection);
         ExitListener();
 	}
 
@@ -43,9 +43,5 @@ public class MainMenuUIManager : MonoBehaviour {
     public void OpenInfoMode()
     {
         SceneManager.LoadScene("infoScene");
-    }
-
-    public void Exit() {
-        Application.Quit();
     }
 }

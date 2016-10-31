@@ -188,7 +188,7 @@ namespace AssetBundles
 			if (m_Request == null && m_DownloadingError != null)
 			{
 				Debug.LogError(m_DownloadingError);
-                ServerManager.instanse.status += ""+ m_DownloadingError+"\n";
+                ServerManager.Instanse().status += ""+ m_DownloadingError+"\n";
 				return true;
 			}
 	

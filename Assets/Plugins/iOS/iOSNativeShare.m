@@ -30,27 +30,30 @@ extern UIViewController* UnityGetGLViewController();
 	
 }
 
-void _makeToast (){
-	
-	MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
-    
-    // Configure for text only and offset down
-    hud.mode = MBProgressHUDModeText;
-    hud.label.text = @"Some message...";
-    hud.margin = 10.f;
-    hud.yOffset = 150.f;
-    hud.removeFromSuperViewOnHide = YES;
-    
-    [hud hideAnimated:YES afterDelay:3];
-	
-}
-
-(void) sendWhatsappMessage(){
+void sendWhatsappMessage(){
 
     NSURL *whatsappURL = [NSURL URLWithString:@"whatsapp://send?text=Hello%2C%20World!"];
     if ([[UIApplication sharedApplication] canOpenURL: whatsappURL]) {
         [[UIApplication sharedApplication] openURL: whatsappURL];
-    }}
+    }
+	else ShowAlertMessage (@"Error", @"Install WhatsApp");
+	}
+	
+void ShowAlertMessage (NSString *title, NSString *message){
+	
+	UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
+	                      
+	                      message:message
+	                      
+	                      delegate:nil
+	                      
+	                      cancelButtonTitle:@"OK"
+	                      
+	                      otherButtonTitles: nil];
+	
+	[alert show];
+	
+}
 
 +(id) withText:(char*)text withURL:(char*)url withImage:(char*)image withSubject:(char*)subject{
 	

@@ -22,10 +22,9 @@ struct SocialSharingStruct {
 #ifdef __cplusplus
 extern "C" {
 #endif
-    
-    void _makeToast();
+    void sendWhatsappMessage();
+    void showAlertMessage(struct ConfigStruct *confStruct);
     void showSocialSharing(struct SocialSharingStruct *confStruct);
-	void sendWhatsappMessage();
     
 #ifdef __cplusplus
 }

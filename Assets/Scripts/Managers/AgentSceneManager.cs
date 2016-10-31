@@ -20,15 +20,15 @@ public class AgentSceneManager : MonoBehaviour {
     [DllImport("__Internal")]
     private static extern void sendWhatsappMessage();
 #endif
-    // Use this for initialization
-    void Start () {
+ //   // Use this for initialization
+ //   void Start () {
 	
-	}
+	//}
 	
-	// Update is called once per frame
-	void Update () {
+	//// Update is called once per frame
+	//void Update () {
 	
-	}
+	//}
 
     public void MakeCall() {
         Application.OpenURL("tel://2468461321");
@@ -55,7 +55,7 @@ public class AgentSceneManager : MonoBehaviour {
     }
 
     public void MakeChat() {
-#if INITY_ANDROID
+#if UNITY_ANDROID
         AndroidJavaClass unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
         AndroidJavaObject unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
         AndroidJavaClass customClass = new AndroidJavaClass("com.wear.locationservice.UnityLocationService");

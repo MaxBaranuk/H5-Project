@@ -10,6 +10,7 @@ using UnityEngine;
 using Vuforia;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System;
 /// <summary>
 /// A custom handler that implements the ITrackableEventHandler interface.
 /// </summary>
@@ -17,9 +18,13 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
 {
     public GameObject currObject;
     public Text info;
-    public GameObject agentButton;
+//    public GameObject agentButton;
+    public GameObject mainMenu;
+    private bool currMenuStateIsActive;
     #region PRIVATE_MEMBERS
     private TrackableBehaviour mTrackableBehaviour;
+    private ObjectTracker objectTracker;
+    private Action targetFind;
     #endregion // PRIVATE_MEMBERS
 
 
@@ -31,10 +36,17 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
         {
             mTrackableBehaviour.RegisterTrackableEventHandler(this);
         }
+        objectTracker = TrackerManager.Instance.GetTracker<ObjectTracker>();
     }
 
     void Update() {
-        info.text = ServerManager.instanse.status;
+        if (currMenuStateIsActive != mainMenu.activeInHierarchy)
+        {
+            currMenuStateIsActive = mainMenu.activeInHierarchy;
+            if (currMenuStateIsActive) objectTracker.TargetFinder.Stop();
+            else objectTracker.TargetFinder.StartRecognition();
+        }
+//        info.text = ServerManager.instanse.status;
     }
     #endregion //MONOBEHAVIOUR_METHODS
 
@@ -70,23 +82,22 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
 
     #region PRIVATE_METHODS
 
-
     private void OnTrackingFound()
     {
-        //object visible
-        string id = mTrackableBehaviour.Trackable.Name;
+        string id = ""+mTrackableBehaviour.Trackable.Name;
+
         info.text = id;
 
-        if (id == "ananas_group")
-        {
-            StartCoroutine(ServerManager.instanse.getObjectByTargetID(id));
-            agentButton.SetActive(true);
-            ServerManager.instanse.status += "";
-        }
-        if(id=="customTarget") {
-            // link
-            SceneManager.LoadScene("WebView");
-        }
+        ServerManager.Instanse().CheckTargetID(id);
+        //        if (id == "ananas_group")
+        //        {
+        //            StartCoroutine(ServerManager.instanse.getObjectByTargetID(id));
+        ////            agentButton.SetActive(true);
+        //            ServerManager.instanse.status += "";
+        //        }
+        //        if (id == "customTarget") {
+        //            SceneManager.LoadScene("WebView");
+        //        }
 
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
         Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
@@ -104,7 +115,7 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
         }
 
         // Stop finder since we have now a result, finder will be restarted again when we lose track of the result
-        ObjectTracker objectTracker = TrackerManager.Instance.GetTracker<ObjectTracker>();
+        
         if (objectTracker != null)
         {
             objectTracker.TargetFinder.Stop();
@@ -116,21 +127,18 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
     private void OnTrackingLost()
     {
 
-        ObjectTracker objectTracker = TrackerManager.Instance.GetTracker<ObjectTracker>();
         if (objectTracker != null)
         {
             objectTracker.TargetFinder.ClearTrackables(false);
             objectTracker.TargetFinder.StartRecognition();
         }
 
-        if (currObject != null) {
-            Destroy(currObject);
-        }
-        info.text = "clear";
-        ServerManager.instanse.status = "";      
-        agentButton.SetActive(false);
-
-
+        //        g.SetActive(false);
+//        info.text = "clear";
+        ServerManager.Instanse().status = "";
+        Destroy(currObject);
+        transform.FindChild("Image").gameObject.SetActive(false);
+//        agentButton.SetActive(false);
         Renderer[] rendererComponents = GetComponentsInChildren<Renderer>(true);
         Collider[] colliderComponents = GetComponentsInChildren<Collider>(true);
 
@@ -151,5 +159,7 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
 
         Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
     }
+
+
     #endregion //PRIVATE_METHODS
 }
