@@ -4,11 +4,13 @@ using UnityEngine.SceneManagement;
 
 public class ExitListener : MonoBehaviour {
 
-    public GameObject exitPopup;
-    public GameObject mainMenu;
+    GameObject exitPopup;
+    GameObject mainMenu;
 
 	// Use this for initialization
 	void Start () {
+        mainMenu = GameObject.Find("Canvas").transform.FindChild("MainPanel").gameObject;
+        exitPopup = mainMenu.transform.FindChild("ExitPopup").gameObject;
 //        StartCoroutine(ServerManager.instanse.getObjectByTargetID(""));
     }
 	

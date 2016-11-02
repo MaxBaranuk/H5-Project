@@ -8,23 +8,34 @@ using UnityEngine.UI;
 public class ArSceneManager : MonoBehaviour
 {
 
-    public GameObject connectionInfoPanel;
-    public GameObject menu;
-    public GameObject menuPanel;
-    public Button photoButton;
-    public Button mapButton;
-    public Button menuButton;
+    GameObject connectionInfoPanel;
+    
+    GameObject menu;
+    GameObject menuPanel;
+    Button photoButton;
+    Button mapButton;
+    Button menuButton;
     bool _isProcessing;
 
+
+    void Start() {
+        connectionInfoPanel = GameObject.Find("Canvas").transform.FindChild("ConnectionInfoPanel").gameObject;
+        
+        menu = GameObject.Find("Canvas").transform.FindChild("MainPanel").gameObject;
+        menuPanel = menu.transform.FindChild("MenuPanel").gameObject;
+        photoButton = GameObject.Find("Canvas").transform.FindChild("Photo").GetComponent<Button>();
+        mapButton = GameObject.Find("Canvas").transform.FindChild("Map").GetComponent<Button>();
+        menuButton = GameObject.Find("Canvas").transform.FindChild("MenuButton").GetComponent<Button>();
+    }
     // Use this for initialization
     void Update()
     {
         connectionInfoPanel.SetActive(!ServerManager.Instanse().hasInternetConnection);
     }
 
-    public void GetContent(string id) {
-        ServerManager.Instanse().CheckTargetID(id);
-    }
+    //public void GetContent(string id) {
+    //    ServerManager.Instanse().CheckTargetID(id);
+    //}
 
     public void ToMap()
     {

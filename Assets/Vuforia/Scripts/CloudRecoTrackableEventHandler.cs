@@ -16,6 +16,10 @@ using System;
 /// </summary>
 public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHandler
 {
+    public delegate void TargetFindAction(string targetName);
+    public delegate void TargetLostAction();
+    public static event TargetFindAction targetFind;
+    public static event TargetLostAction targetLost;
     public GameObject currObject;
     public Text info;
 //    public GameObject agentButton;
@@ -24,7 +28,8 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
     #region PRIVATE_MEMBERS
     private TrackableBehaviour mTrackableBehaviour;
     private ObjectTracker objectTracker;
-    private Action targetFind;
+    //public static Action targetFind;
+    //public static Action targetLost;
     #endregion // PRIVATE_MEMBERS
 
 
@@ -86,9 +91,9 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
     {
         string id = ""+mTrackableBehaviour.Trackable.Name;
 
-        info.text = id;
+        info.text = "loading: "+id;
 
-        ServerManager.Instanse().CheckTargetID(id);
+        
         //        if (id == "ananas_group")
         //        {
         //            StartCoroutine(ServerManager.instanse.getObjectByTargetID(id));
@@ -120,6 +125,9 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
         {
             objectTracker.TargetFinder.Stop();
         }
+
+        targetFind(id);
+        
 
         Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " found");
     }
@@ -155,8 +163,10 @@ public class CloudRecoTrackableEventHandler : MonoBehaviour, ITrackableEventHand
         }
 
         // Start finder again if we lost the current trackable
-       
 
+        targetLost();
+
+ //       ServerManager.Instanse().LoseTarget();
         Debug.Log("Trackable " + mTrackableBehaviour.TrackableName + " lost");
     }
 

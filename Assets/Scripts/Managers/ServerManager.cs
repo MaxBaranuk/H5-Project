@@ -7,21 +7,26 @@ using UnityEngine.UI;
 using WeAr.H5.Domain.Model;
 using WeAr.H5.Domain.Model.Enums;
 using WeAr.H5.WebAPI.Client;
+using WeAr.H5.Domain.Model.DTO;
+using System.Threading;
 
 public class ServerManager : MonoBehaviour {
 
     static ServerManager instanse;
-    public const string AssetBundlesOutputPath = "/AssetBundles/";
-    public string assetBundleName = "objects";
-    public string assetName = "customTarget";
-    GameObject currObj;
+//    public const string AssetBundlesOutputPath = "/AssetBundles/";
+ //   public string assetBundleName = "objects";
+ //   public string assetName = "customTarget";
+    //GameObject currObj;
+    //GameObject currImage;
     public string status;
     public bool hasInternetConnection = true;
-//    GameObject target;
+
+    public FullContentDTO content = null;
 
     AndroidJavaClass unityClass;
     AndroidJavaObject unityActivity;
     AndroidJavaClass customClass;
+   
 
     void Awake() {
         StartCoroutine(CheckInternetConnection());
@@ -32,8 +37,9 @@ public class ServerManager : MonoBehaviour {
             instanse = this;
             DontDestroyOnLoad(instanse);
             Input.location.Start(3, 3);
-//            loc = Input.location.lastData;
         }
+
+        
 
 #if UNITY_ANDROID
         unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
@@ -42,6 +48,8 @@ public class ServerManager : MonoBehaviour {
 #endif
 
     }
+
+    
 
     public static ServerManager Instanse() {
 
@@ -57,45 +65,12 @@ public class ServerManager : MonoBehaviour {
 	}
 
 
-    public void OperateService(bool isStart)
-    {
-        if (isStart) StartAndroidService();
-        else StopAndroidService();
-    }
+    
 
-    void StartAndroidService()
-    {
-#if UNITY_ANDROID
-        customClass.CallStatic("StartCheckerService", unityActivity);
-#elif UNITY_IOS
-        //    applicationDidEnterBackground();
-//        _makeToast();
-#endif
-
-    }
-
-    void StopAndroidService()
-    {
-        //AndroidJavaClass unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-        //AndroidJavaObject unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
-        //AndroidJavaClass customClass = new AndroidJavaClass("com.wear.locationservice.UnityLocationService");
-#if UNITY_ANDROID
-        customClass.CallStatic("StopCheckerService", unityActivity);
-#elif UNITY_IOS
-
-#endif
-    }
-
-    public Agent getAgentInfo(string agentID)
-    {
-        Agent ag = new Agent();
-        return ag;
-    }
-
-    //public IEnumerator getObjectByTargetID(string targetID) {
-
-    //    assetName = targetID;
-    //    yield return StartCoroutine(LoadAsset());
+    //public Agent getAgentInfo(string agentID)
+    //{
+    //    Agent ag = new Agent();
+    //    return ag;
     //}
 
     IEnumerator CheckInternetConnection()
@@ -104,126 +79,93 @@ public class ServerManager : MonoBehaviour {
         {
             if (Application.internetReachability == NetworkReachability.NotReachable) hasInternetConnection = false;
             else hasInternetConnection = true;
-//            {
-//                Debug.Log("Error. Check internet connection!");
-//            }
-//            //           WWW www = new WWW("http://192.168.1.105/dashboard");
-//            WWW www = new WWW("http://www.this-page-intentionally-left-blank.org/");
-            
-//            float waitTime = 2;
-//            while (!www.isDone && waitTime > 0)
-//            {
-//                yield return new WaitForSeconds(0.1f);
-//                waitTime-=0.1f;
-//            }
-            
-//            if (!www.isDone | www.error != null)
-//            {
-//                hasInternetConnection = false;
-//            }
-//            else {
-//                hasInternetConnection = true;
-//            }
-////            connectionInfoPanel.SetActive(!hasInternetConnection);
             yield return new WaitForSeconds(.2f);
         }
     }
 
-//    IEnumerator LoadAsset()
-//    {
-//        yield return StartCoroutine(Initialize());
-//        // Load asset.
-//        yield return StartCoroutine(InstantiateGameObjectAsync(assetBundleName, assetName));
-////        status += "finish\n";
+    //protected IEnumerator Initialize()
+    //{
+    //    DontDestroyOnLoad(gameObject);
+
+//#if DEVELOPMENT_BUILD || UNITY_EDITOR
+////        AssetBundleManager.SetDevelopmentAssetBundleServer();
+// //       AssetBundleManager.SetSourceAssetBundleURL("http://192.168.1.105/assets/");
+//#else
+//		// Use the following code if AssetBundles are embedded in the project for example via StreamingAssets folder etc:
+//		AssetBundleManager.SetSourceAssetBundleURL(Application.dataPath + "/");
+//		// Or customize the URL based on your deployment or configuration
+//		AssetBundleManager.SetSourceAssetBundleURL("http://192.168.1.105/assets/");
+//#endif
+
+//        // Initialize AssetBundleManifest which loads the AssetBundleManifest object.
+//        var request = AssetBundleManager.Initialize();
+//        if (request != null) {
+//            yield return StartCoroutine(request);
+//            status += "request ok\n";
+//        }
+//        else {
+//            status += "request null\n";
+//        }
 //    }
 
-    protected IEnumerator Initialize()
+
+    //public FullContentDTO CheckTargetID(string targetID)
+    //{
+    //    if(hasInternetConnection)
+    //        StartCoroutine(GetContentByTarget(targetID));
+    //    return content;
+    //}
+
+    //IEnumerator SendRequest(Action callback) {
+    //    callback();
+    //    yield return null;
+    //}
+//    public void LoseTarget() {
+//        StopAllCoroutines();
+//        GameObject.Find("Canvas").transform.FindChild("LoadingPanel").gameObject.SetActive(false);
+//        if (currObj) currObj.SetActive(false);
+//        if (currImage) currImage.SetActive(false);
+////        if(assetBundle) assetBundle.Unload(true);
+//    }
+
+    public IEnumerator GetContentByTarget(string targetID)
     {
-        DontDestroyOnLoad(gameObject);
-
-#if DEVELOPMENT_BUILD || UNITY_EDITOR
-//        AssetBundleManager.SetDevelopmentAssetBundleServer();
-        AssetBundleManager.SetSourceAssetBundleURL("http://192.168.1.105/assets/");
-#else
-		// Use the following code if AssetBundles are embedded in the project for example via StreamingAssets folder etc:
-		AssetBundleManager.SetSourceAssetBundleURL(Application.dataPath + "/");
-		// Or customize the URL based on your deployment or configuration
-		AssetBundleManager.SetSourceAssetBundleURL("http://192.168.1.105/assets/");
-#endif
-
-        // Initialize AssetBundleManifest which loads the AssetBundleManifest object.
-        var request = AssetBundleManager.Initialize();
-        if (request != null) {
-            yield return StartCoroutine(request);
-            status += "request ok\n";
-        }
-        else {
-            status += "request null\n";
-        }
-    }
+ //       GameObject.Find("Canvas").transform.FindChild("LoadingPanel").gameObject.SetActive(true);
+        //        yield return new WaitForSecondsRealtime(0.3f);
+        //        UnityEngine.UI.Text info = GameObject.Find("Canvas").transform.FindChild("info").GetComponent<UnityEngine.UI.Text>();
+        //        info.text = "loading";
 
 
-    public void CheckTargetID(string targetID)
-    {
-        if(hasInternetConnection)
-            StartCoroutine(GetContentByTarget(targetID));
-    }
-
-    IEnumerator GetContentByTarget(string targetID)
-    {
-        UnityEngine.UI.Text info = GameObject.Find("Canvas").transform.FindChild("info").GetComponent<UnityEngine.UI.Text>();
-        info.text = "loading";
-        yield return new WaitForSeconds(0.5f);
-        Marker marker = WebApiClient.SendAndDeserialize<Marker>(EMethod.GET,
-                "http://wear-h5.azurewebsites.net/api/markers/vuforia/"+ targetID);
+        //FullContentDTO content; = WebApiClient.SendAndDeserialize<FullContentDTO>(EMethod.GET,
+        //        "http://wear-h5.azurewebsites.net/api/markers/vuforia/" + targetID);
 
 
-        yield return new WaitForSeconds(0.5f);
-        info.text = "loading 2";
-        Content content = WebApiClient.SendAndDeserialize<Content>(EMethod.GET,
-                "http://wear-h5.azurewebsites.net/api/contents/" + marker.ContentId);
+        content = null;
 
-        yield return new WaitForSeconds(0.5f);
-        info.text = "loading 3";
 
-        switch (content.ContentType)
+        //yield return StartCoroutine(SendRequest(() => {
+
+        //    content = WebApiClient.SendAndDeserialize<FullContentDTO>(EMethod.GET,
+        //        "http://wear-h5.azurewebsites.net/api/markers/vuforia/" + targetID);
+
+        //}));
+
+        Thread t = new Thread(() =>
         {
-            case EContentType.AssetBundle:
-                WeAr.H5.Domain.Model.AssetBundle bundle = WebApiClient.SendAndDeserialize<WeAr.H5.Domain.Model.AssetBundle>(EMethod.GET,
-                "http://wear-h5.azurewebsites.net/api/contents/asset-bundle/" + content.Id);
-                AssetBundleCreateRequest assetBundleCreateRequest = UnityEngine.AssetBundle.LoadFromMemoryAsync(bundle.Value);
-                yield return assetBundleCreateRequest;
-                UnityEngine.AssetBundle assetBundle = assetBundleCreateRequest.assetBundle;
-//                UnityEngine.AssetBundle assetBundle = UnityEngine.AssetBundle.CreateFromMemoryA(bundle.Value);
-
-                GameObject go = Instantiate(assetBundle.LoadAllAssets<GameObject>()[0]);
-                go.name = "3dModel";
-                go.SetActive(true);
-                Transform goTransform = go.GetComponent<Transform>();
-
-
-                GameObject target = GameObject.Find("ImageTarget");
-                goTransform.SetParent(target.transform);
-                goTransform.localScale = Vector3.one * 0.01f;
-                break;
-            case EContentType.Image:
-                GameObject image = GameObject.Find("ImageTarget").transform.FindChild("Image").gameObject;
-                image.SetActive(true);
-                WeAr.H5.Domain.Model.Image im = WebApiClient.SendAndDeserialize<WeAr.H5.Domain.Model.Image>(EMethod.GET,
-                "http://wear-h5.azurewebsites.net/api/contents/image/" + content.Id);
-                Texture2D tex = new Texture2D(2, 2);
-                tex.LoadImage(im.Value);
-                image.GetComponent<Renderer>().material.mainTexture = tex;
-
-                break;
-            case EContentType.Link:
-                Link link = WebApiClient.SendAndDeserialize<Link>(EMethod.GET,
-                "http://wear-h5.azurewebsites.net/api/contents/link/" + content.Id);
-                Application.OpenURL(link.Value);
-                break;
-        }
-
-        info.text = "finish loading";
+            
+            content = WebApiClient.SendAndDeserialize<FullContentDTO>(EMethod.GET,
+                "http://wear-h5.azurewebsites.net/api/markers/vuforia/" + targetID);
+        });
+        t.Start();
+        yield return new WaitUntil(() => content != null|!hasInternetConnection);
+        //        t.Join();
+        //       yield return content;
+        //        yield return new WaitForSeconds(0.5f);
+        //        info.text = "loading 3";
+//        GameObject.Find("Canvas").transform.FindChild("LoadingPanel").gameObject.SetActive(false);
+       
+        
+        //        info.text = "finish loading";
         //WWW www = new WWW("" + nameOfTarget);
 
         //loadingBar.SetActive(true);
@@ -293,47 +235,74 @@ public class ServerManager : MonoBehaviour {
         //    goTransform.localPosition = new Vector3(0, .1f, 0);
         //    goTransform.localEulerAngles = Vector3.zero;
         //}
-//        yield return null;
+        //        yield return null;
     }
 
 
+    public void OperateService(bool isStart)
+    {
+        if (isStart) StartAndroidService();
+        else StopAndroidService();
+    }
 
+    void StartAndroidService()
+    {
+#if UNITY_ANDROID
+        customClass.CallStatic("StartCheckerService", unityActivity);
+#elif UNITY_IOS
+        //    applicationDidEnterBackground();
+//        _makeToast();
+#endif
 
+    }
 
+    void StopAndroidService()
+    {
+        //AndroidJavaClass unityClass = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
+        //AndroidJavaObject unityActivity = unityClass.GetStatic<AndroidJavaObject>("currentActivity");
+        //AndroidJavaClass customClass = new AndroidJavaClass("com.wear.locationservice.UnityLocationService");
+#if UNITY_ANDROID
+        customClass.CallStatic("StopCheckerService", unityActivity);
+#elif UNITY_IOS
 
-//    protected IEnumerator InstantiateGameObjectAsync(string assetBundleName, string assetName)
-//    {
-//        // This is simply to get the elapsed time for this phase of AssetLoading.
-//        float startTime = Time.realtimeSinceStartup;
-////        status += "time " + startTime+"\n";
-//        // Load asset from assetBundle.
-//        AssetBundleLoadAssetOperation request = AssetBundleManager.LoadAssetAsync(assetBundleName, assetName, typeof(GameObject));
-//        if (request == null)
-//        {
-//            status += "request null\n";
-//            yield break;
-//        }
-//        else {
-//            status += "request ok\n";
-//        }   
-//        yield return StartCoroutine(request);
+#endif
+    }
 
-//        // Get the asset.
-//        GameObject prefab = request.GetAsset<GameObject>();
-//        if (prefab != null) {
-//            currObj = Instantiate(prefab);
-//            GameObject target = GameObject.Find("ImageTarget");
-//            target.GetComponent<CloudRecoTrackableEventHandler>().currObject = currObj;
-//            currObj.transform.parent = target.transform;
-//            status += "obj created\n";
-//        }       
-//        else status += "prefab null\n";
-//        // Calculate and display the elapsed time.
-//        float elapsedTime = Time.realtimeSinceStartup - startTime;
-//        status += ""+ assetName + (prefab == null ? " was not" : " was") + " loaded successfully in " + elapsedTime + " seconds\n";
-//        Debug.Log(assetName + (prefab == null ? " was not" : " was") + " loaded successfully in " + elapsedTime + " seconds");
-//        //status += "" + currObj.transform.position+"\n";
-//        //status += "" + currObj.transform.localScale + "\n";
-//    }
+    
+
+    //    protected IEnumerator InstantiateGameObjectAsync(string assetBundleName, string assetName)
+    //    {
+    //        // This is simply to get the elapsed time for this phase of AssetLoading.
+    //        float startTime = Time.realtimeSinceStartup;
+    ////        status += "time " + startTime+"\n";
+    //        // Load asset from assetBundle.
+    //        AssetBundleLoadAssetOperation request = AssetBundleManager.LoadAssetAsync(assetBundleName, assetName, typeof(GameObject));
+    //        if (request == null)
+    //        {
+    //            status += "request null\n";
+    //            yield break;
+    //        }
+    //        else {
+    //            status += "request ok\n";
+    //        }   
+    //        yield return StartCoroutine(request);
+
+    //        // Get the asset.
+    //        GameObject prefab = request.GetAsset<GameObject>();
+    //        if (prefab != null) {
+    //            currObj = Instantiate(prefab);
+    //            GameObject target = GameObject.Find("ImageTarget");
+    //            target.GetComponent<CloudRecoTrackableEventHandler>().currObject = currObj;
+    //            currObj.transform.parent = target.transform;
+    //            status += "obj created\n";
+    //        }       
+    //        else status += "prefab null\n";
+    //        // Calculate and display the elapsed time.
+    //        float elapsedTime = Time.realtimeSinceStartup - startTime;
+    //        status += ""+ assetName + (prefab == null ? " was not" : " was") + " loaded successfully in " + elapsedTime + " seconds\n";
+    //        Debug.Log(assetName + (prefab == null ? " was not" : " was") + " loaded successfully in " + elapsedTime + " seconds");
+    //        //status += "" + currObj.transform.position+"\n";
+    //        //status += "" + currObj.transform.localScale + "\n";
+    //    }
 }
 
